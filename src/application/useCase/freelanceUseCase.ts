@@ -8,9 +8,12 @@ export class freelanceUseCase implements IfreelanceUseCase {
   constructor(repository: IfreelanceRepository) {
     this.repository = repository;
   }
-   async CreateJob(values :CreateJob){
-    const dbresponse =  await this.repository.createJob(values);
+  async CreateJob(values: CreateJob) {
+    const dbresponse = await this.repository.createJob(values);
     return dbresponse ? dbresponse : null;
-   }
-
+  }
+  async getAllJob() {
+    const dbresponse = await this.repository.GetJob();
+    return dbresponse ? dbresponse : null;
+  }
 }
