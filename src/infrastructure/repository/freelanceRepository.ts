@@ -38,13 +38,23 @@ export class freelanceRepository implements IfreelanceRepository {
 
     return savedComplaint ? savedComplaint : null;
   }
-  async GetJob() {
+  async  GetJob() {
     try {
       const dbValues = await Job.find();
-      return dbValues ? dbValues : null;
+      if (dbValues) {
+        const currentTime = new Date();
+        dbValues.forEach(job => {
+          if (new Date(job.deadline) < currentTime) {
+            job.status = 'Closed';
+          }
+        });
+        return dbValues;
+      }
+      return null;
     } catch (error) {
-      console.log("error occured Getting Job Form db", error);
+      console.log("Error occurred while getting jobs from the database", error);
       return null;
     }
   }
+  
 }
