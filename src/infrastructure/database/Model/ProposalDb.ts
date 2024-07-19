@@ -8,6 +8,7 @@ export interface IProposal extends Document {
   jobOwner: string;
   jobOwnerEmail: string;
   description: string;
+  status: string;
   image: string;
 }
 
@@ -26,6 +27,10 @@ const ProposalSchema: Schema = new Schema({
   },
   description: {
     type: String,
+  },
+  status: {
+    type: String,
+    default:'pending'
   },
   image: {
     type: String,
