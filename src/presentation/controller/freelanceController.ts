@@ -29,11 +29,13 @@ export class freelanceController {
   }
   async proposalPost(req: Request, res: Response) {
     try {
-      console.log("req.body",req.body);
-      console.log("req.file",req.file);
-      
-      //const response = await this.freelanceService.getAllJob();
-      //.status(200).json({ message: " Got All Jobs Successfully", response });
+      console.log("req.body", req.body);
+      console.log("req.file", req.file);
+      const cvImage  = req.file;
+      const values = {cvImage,...req.body}
+      console.log("values.file", values);
+      const response = await this.freelanceService.proposalSend(values);
+      res.status(200).json({ message: "Proposal Send  Successfully", response });
     } catch (error) {
       console.error("Error occured in Send Proposal", error);
       res.status(500).json({ message: "Send Proposal Failed" });

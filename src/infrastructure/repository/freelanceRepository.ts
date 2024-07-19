@@ -1,12 +1,12 @@
 import { CreateJob } from "../../domain/entitites/createJob";
+import { proposalPost } from "../../domain/entitites/sendProposal";
 import Job from "../database/Model/CreateJob";
+import ProposalDb from "../database/Model/ProposalDb";
 import { IfreelanceRepository } from "../interface/IfreelanceRepository";
 import { uploadS3Image } from "../s3/s3Uploader";
 
 export class freelanceRepository implements IfreelanceRepository {
   async createJob(allValues: CreateJob) {
-    console.log("allvalues", allValues);
-
     const s3Response: any = await uploadS3Image(allValues.image);
     if (s3Response.error) {
       console.error("Error uploading image to S3:", s3Response.error);
@@ -38,14 +38,14 @@ export class freelanceRepository implements IfreelanceRepository {
 
     return savedComplaint ? savedComplaint : null;
   }
-  async  GetJob() {
+  async GetJob() {
     try {
       const dbValues = await Job.find();
       if (dbValues) {
         const currentTime = new Date();
-        dbValues.forEach(job => {
+        dbValues.forEach((job) => {
           if (new Date(job.deadline) < currentTime) {
-            job.status = 'Closed';
+            job.status = "Closed";
           }
         });
         return dbValues;
@@ -56,5 +56,34 @@ export class freelanceRepository implements IfreelanceRepository {
       return null;
     }
   }
-  
+  async sendProposalDb(values: proposalPost): Promise<any> {
+    try {
+      console.log("values Created  successfully:", values);
+
+      const s3Response: any = await uploadS3Image(values.cvImage);
+      if (s3Response.error) {
+        console.error("Error uploading image to S3:", s3Response.error);
+        throw new Error("Failed to upload image to S3");
+      }
+
+      console.log("URL of the image from the S3 bucket:", s3Response.Location);
+
+      const proposalValues = {
+        userId: values.userId,
+        jobId: values.jobId,
+        jobOwner: values.jobOwner,
+        jobOwnerEmail: values.jobOwnerEmail,
+        description: values.description,
+        image: s3Response.Location,
+      };
+      const newProposal = new ProposalDb(proposalValues);
+      const proposalSaved = await newProposal.save();
+
+      console.log("Proposal created successfully:", proposalSaved);
+      return proposalSaved ? proposalSaved : null;
+    } catch (error) {
+      console.error("Error in sendProposalDb:", error);
+      throw error;
+    }
+  }
 }
