@@ -91,10 +91,35 @@ export class freelanceController {
   }
   async jobDetailsWithId(req: Request,res: Response){
     try {
-      
+      const jobId  = req.params.jobId;
+      const response = await this.freelanceService.jobDetailsWithId(jobId);
+      res.status(200).json({ message:"Job Details with Id Fetched successfully",response});
     } catch (error) {
       console.error("error Occured While processing The Job Details",error);
-      res.status(500).json({ message: "Proposal Status Change getting Failed" });
+      res.status(500).json({ message: "error Occured While processing The Job Details"});
     }
+  }
+  async jobEdit(req: Request,res: Response){
+  console.log("req",req.body);
+  try {
+    const values = req.body;
+      const jobId = req.params.jobId;
+      const allValues = {jobId,...values};
+      const response = await this.freelanceService.UpdateJob(allValues);
+      res.status(200).json({message:"Job Updated Successfully",response})
+  } catch (error) {
+    console.error("error Occured While Update The Job Details",error);
+      res.status(500).json({ message: "error Occured While Update The Job Details"});
+  }
+  }
+  async deleteJob(req: Request,res: Response){
+  try {
+      const jobId = req.params.jobId;
+      const response = await this.freelanceService.deleteJob(jobId);
+      res.status(200).json({message:"Job Deleted Successfully",response})
+  } catch (error) {
+    console.error("error Occured While Delete The Job ",error);
+      res.status(500).json({ message: "error Occured While Delete The Job "});
+  }
   }
 }

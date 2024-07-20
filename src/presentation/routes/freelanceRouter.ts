@@ -37,5 +37,13 @@ router.get(
   "/jobDetailsWithId/:jobId",
   controller.jobDetailsWithId.bind(controller)
 );
+router.put(
+  "/jobEdit/:jobId",
+  controller.jobEdit.bind(controller)
+);
+router.delete(
+  "/deleteJob/:jobId",
+  controller.deleteJob.bind(controller)
+);
 
 export default router;

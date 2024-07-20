@@ -2,6 +2,7 @@ import { CreateJob } from "../../domain/entitites/createJob";
 import { IMergedJobProposal } from "../../domain/entitites/OurJobList";
 import { returnProposal } from "../../domain/entitites/Proposalreturn";
 import { proposalPost } from "../../domain/entitites/sendProposal";
+import { updateJobPost } from "../../domain/entitites/updateJob";
 import { IJob } from "../../infrastructure/database/Model/CreateJob";
 import { IProposal } from "../../infrastructure/database/Model/ProposalDb";
 
@@ -13,4 +14,7 @@ export interface IfreelanceUseCase {
   getAllProposals(userId: string): Promise<IMergedJobProposal[] | null>;
   getJobRequests(userId: string): Promise<IMergedJobProposal[] | null>;
   changeProposalStatus(proposalId: string,action: string): Promise<IProposal | null>;
+  jobDetailsWithId(jobId: string): Promise<IJob | null>;
+  UpdateJob(values: updateJobPost): Promise<IJob | null>;
+  deleteJob(jobId: string): Promise<IJob | null>;
 }

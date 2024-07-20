@@ -1,5 +1,6 @@
 import { CreateJob } from "../../domain/entitites/createJob";
 import { proposalPost } from "../../domain/entitites/sendProposal";
+import { updateJobPost } from "../../domain/entitites/updateJob";
 import { kafkaConsumer } from "../broker/kafkaBroker/kafkaConsumer";
 import { kafkaProducer } from "../broker/kafkaBroker/kafkaProducer";
 import Job from "../database/Model/CreateJob";
@@ -192,6 +193,35 @@ export class freelanceRepository implements IfreelanceRepository {
       return proposal ? proposal : null;
     } catch (error) {
       console.log("Error updating proposal Status", error);
+      return null;
+    }
+  }
+  async jobdetailsDb(jobId: string) {
+    try {
+      const jobDetails = await Job.findById(jobId);
+      return jobDetails ? jobDetails : null;
+    } catch (error) {
+      console.log("Error Getting Job details", error);
+      return null;
+    }
+  }
+  async UpdateJobDb(values: updateJobPost) {
+    try {
+      const { jobId, ...updateData } = values;
+
+      const updatedJob = await Job.findByIdAndUpdate(
+        jobId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedJob) {
+        throw new Error("Job not found");
+      }
+
+      return updatedJob;
+    } catch (error) {
+      console.error("Error updating job:", error);
       return null;
     }
   }

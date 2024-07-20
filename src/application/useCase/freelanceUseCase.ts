@@ -1,5 +1,6 @@
 import { CreateJob } from "../../domain/entitites/createJob";
 import { proposalPost } from "../../domain/entitites/sendProposal";
+import { updateJobPost } from "../../domain/entitites/updateJob";
 import { IfreelanceRepository } from "../../infrastructure/interface/IfreelanceRepository";
 import { IfreelanceUseCase } from "../interface/IfreelanceUseCase";
 
@@ -35,6 +36,18 @@ export class freelanceUseCase implements IfreelanceUseCase {
   }
   async changeProposalStatus(proposalId: string,action: string) {
     const dbresponse = await this.repository.proposalStatusDb(proposalId,action);
+    return dbresponse ? dbresponse : null;
+  }
+  async jobDetailsWithId(jobId: string) {
+    const dbresponse = await this.repository.jobdetailsDb(jobId);
+    return dbresponse ? dbresponse : null;
+  }
+  async UpdateJob(values: updateJobPost) {
+    const dbresponse = await this.repository.UpdateJobDb(values);
+    return dbresponse ? dbresponse : null;
+  }
+  async deleteJob(jobId: string) {
+    const dbresponse = await this.repository.deleteJobDb(jobId);
     return dbresponse ? dbresponse : null;
   }
 }
