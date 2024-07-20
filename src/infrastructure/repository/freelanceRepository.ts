@@ -1,5 +1,7 @@
 import { CreateJob } from "../../domain/entitites/createJob";
 import { proposalPost } from "../../domain/entitites/sendProposal";
+import { kafkaConsumer } from "../broker/kafkaBroker/kafkaConsumer";
+import { kafkaProducer } from "../broker/kafkaBroker/kafkaProducer";
 import Job from "../database/Model/CreateJob";
 import ProposalDb from "../database/Model/ProposalDb";
 import { IfreelanceRepository } from "../interface/IfreelanceRepository";
@@ -43,12 +45,16 @@ export class freelanceRepository implements IfreelanceRepository {
       const dbValues = await Job.find();
       if (dbValues) {
         const currentTime = new Date();
-        dbValues.forEach((job) => {
-          if (new Date(job.deadline) < currentTime) {
+        const updatePromises = dbValues.map(async (job) => {
+          if (new Date(job.deadline) < currentTime && job.status !== "Closed") {
             job.status = "Closed";
+            await job.save();
           }
+          return job;
         });
-        return dbValues;
+
+        const updatedJobs = await Promise.all(updatePromises);
+        return updatedJobs;
       }
       return null;
     } catch (error) {
@@ -56,6 +62,7 @@ export class freelanceRepository implements IfreelanceRepository {
       return null;
     }
   }
+
   async sendProposalDb(values: proposalPost): Promise<any> {
     try {
       console.log("values Created  successfully:", values);
@@ -86,4 +93,53 @@ export class freelanceRepository implements IfreelanceRepository {
       throw error;
     }
   }
+  async getUserJobsDb(userId: string) {
+    try {
+      await kafkaProducer.sendUserDetailsRequest(userId);
+      const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
+        userId
+      );
+      console.log("userDetails from kafka consumer", userDetails);
+
+      if (!userDetails || !userDetails.email) {
+        console.log("User details or email is undefined");
+        return null;
+      }
+
+      const dbValues = await Job.find({ email: userDetails.email });
+      console.log("Jobs found in database", dbValues);
+
+      if (dbValues && dbValues.length > 0) {
+        const currentTime = new Date();
+        const updatePromises = dbValues.map(async (job) => {
+          if (new Date(job.deadline) < currentTime && job.status !== "Closed") {
+            job.status = "Closed";
+            await job.save();
+          }
+          return job;
+        });
+
+        const updatedJobs = await Promise.all(updatePromises);
+        return updatedJobs;
+      } else {
+        console.log("No jobs found for the user");
+        return null;
+      }
+    } catch (error) {
+      console.log("Error occurred while getting jobs from the database", error);
+      return null;
+    }
+  }
+  async getAllProposals() {
+    try {
+      const dbValues = await ProposalDb.find();
+     
+        
+     return dbValues ? dbValues : null;
+    } catch (error) {
+      console.log("Error occurred while getting jobs from the database", error);
+      return null;
+    }
+  }
+
 }

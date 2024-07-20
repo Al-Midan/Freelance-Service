@@ -41,4 +41,24 @@ export class freelanceController {
       res.status(500).json({ message: "Send Proposal Failed" });
     }
   }
+  async getuserALlJob(req: Request, res: Response) {
+    try {
+      const userId = req.params.userId;
+      const response = await this.freelanceService.getuserAllJobs(userId);
+      res.status(200).json({ message: " Got All Jobs Successfully", response });
+    } catch (error) {
+      console.error("Error occured in getting Job", error);
+      res.status(500).json({ message: "Job getting Failed" });
+    }
+  }
+  async getAllProposals(req: Request, res: Response) {
+    try {
+      
+      const response = await this.freelanceService.getAllProposals();
+      res.status(200).json({ message: " Got All Proposals Successfully", response });
+    } catch (error) {
+      console.error("Error occured in getting All Proposals", error);
+      res.status(500).json({ message: "All Proposals getting Failed" });
+    }
+  }
 }

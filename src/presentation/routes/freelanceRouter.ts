@@ -16,5 +16,7 @@ router.post(
 );
 router.get("/getAllJob", controller.getALlJob.bind(controller));
 router.post("/sendProposal",upload.single("cv"), controller.proposalPost.bind(controller));
+router.get("/getUserJobs/:userId", controller.getuserALlJob.bind(controller));
+router.get("/GetAllProposals", controller.getAllProposals.bind(controller));
 
 export default router;
