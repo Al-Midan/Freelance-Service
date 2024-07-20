@@ -130,16 +130,56 @@ export class freelanceRepository implements IfreelanceRepository {
       return null;
     }
   }
-  async getAllProposals() {
+  async getJobRequests(userId: string) {
     try {
-      const dbValues = await ProposalDb.find();
-     
-        
-     return dbValues ? dbValues : null;
+      await kafkaProducer.sendUserDetailsRequest(userId);
+      const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
+        userId
+      );
+      console.log("userDetails from kafka consumer", userDetails);
+
+      if (!userDetails || !userDetails.email) {
+        console.log("User details or email is undefined");
+        return null;
+      }
+      const dbValues = await ProposalDb.find({
+        jobOwnerEmail: userDetails.email,
+      });
+      if (!dbValues || dbValues.length === 0) {
+        return null;
+      }
+      const jobIds = dbValues.map((value) => value.jobId);
+      const jobDocuments = await Job.find({
+        _id: { $in: jobIds },
+      });
+      const allvalues =  {dbValues,...jobDocuments}
+      return allvalues
     } catch (error) {
-      console.log("Error occurred while getting jobs from the database", error);
+      console.log(
+        "Error occurred while getting our proposals jobs from the database",
+        error
+      );
       return null;
     }
   }
-
+  async getAllProposals(userId: string) {
+    try {
+      const dbValues = await ProposalDb.find({ userId: userId });
+      if (!dbValues || dbValues.length === 0) {
+        return null;
+      }
+      const jobIds = dbValues.map((value) => value.jobId);
+      const jobDocuments = await Job.find({
+        _id: { $in: jobIds },
+      });
+      const allvalues =  {dbValues,...jobDocuments}
+      return allvalues
+    } catch (error) {
+      console.log(
+        "Error occurred while getting proposal jobs from the database",
+        error
+      );
+      return null;
+    }
+  }
 }

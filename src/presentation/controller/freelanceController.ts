@@ -31,11 +31,13 @@ export class freelanceController {
     try {
       console.log("req.body", req.body);
       console.log("req.file", req.file);
-      const cvImage  = req.file;
-      const values = {cvImage,...req.body}
+      const cvImage = req.file;
+      const values = { cvImage, ...req.body };
       console.log("values.file", values);
       const response = await this.freelanceService.proposalSend(values);
-      res.status(200).json({ message: "Proposal Send  Successfully", response });
+      res
+        .status(200)
+        .json({ message: "Proposal Send  Successfully", response });
     } catch (error) {
       console.error("Error occured in Send Proposal", error);
       res.status(500).json({ message: "Send Proposal Failed" });
@@ -53,12 +55,26 @@ export class freelanceController {
   }
   async getAllProposals(req: Request, res: Response) {
     try {
-      
-      const response = await this.freelanceService.getAllProposals();
-      res.status(200).json({ message: " Got All Proposals Successfully", response });
+      const userId = req.params.userId;
+      const response = await this.freelanceService.getAllProposals(userId);
+      res
+        .status(200)
+        .json({ message: " Got All Proposals Successfully", response });
     } catch (error) {
       console.error("Error occured in getting All Proposals", error);
       res.status(500).json({ message: "All Proposals getting Failed" });
+    }
+  }
+  async getJobRequests(req: Request, res: Response) {
+    try {
+      const userId = req.params.userId;
+      const response = await this.freelanceService.getJobRequests(userId);
+      res
+        .status(200)
+        .json({ message: " Got All Job Request Successfully", response });
+    } catch (error) {
+      console.error("Error occured in getting Job Request", error);
+      res.status(500).json({ message: "Job Request getting Failed" });
     }
   }
 }

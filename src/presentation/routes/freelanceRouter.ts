@@ -15,8 +15,19 @@ router.post(
   controller.createJob.bind(controller)
 );
 router.get("/getAllJob", controller.getALlJob.bind(controller));
-router.post("/sendProposal",upload.single("cv"), controller.proposalPost.bind(controller));
+router.post(
+  "/sendProposal",
+  upload.single("cv"),
+  controller.proposalPost.bind(controller)
+);
 router.get("/getUserJobs/:userId", controller.getuserALlJob.bind(controller));
-router.get("/GetAllProposals", controller.getAllProposals.bind(controller));
+router.get(
+  "/GetAllProposals/:userId",
+  controller.getAllProposals.bind(controller)
+);
+router.get(
+  "/getJobRequests/:userId",
+  controller.getJobRequests.bind(controller)
+);
 
 export default router;
