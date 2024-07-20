@@ -3,6 +3,7 @@ import { IMergedJobProposal } from "../../domain/entitites/OurJobList";
 import { returnProposal } from "../../domain/entitites/Proposalreturn";
 import { proposalPost } from "../../domain/entitites/sendProposal";
 import { IJob } from "../database/Model/CreateJob";
+import { IProposal } from "../database/Model/ProposalDb";
 
 export interface IfreelanceRepository {
   createJob(values: CreateJob): Promise<IJob | null>;
@@ -11,4 +12,5 @@ export interface IfreelanceRepository {
   getUserJobsDb(userId: string): Promise<IJob[] | null>;
   getAllProposals(userId: string): Promise<any[] | null>;
   getJobRequests(userId: string): Promise<any[] | null>;
+  proposalStatusDb(proposalId: string,action: string): Promise<IProposal | null>;
 }

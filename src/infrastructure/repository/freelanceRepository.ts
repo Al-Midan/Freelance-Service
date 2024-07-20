@@ -152,8 +152,8 @@ export class freelanceRepository implements IfreelanceRepository {
       const jobDocuments = await Job.find({
         _id: { $in: jobIds },
       });
-      const allvalues =  {dbValues,...jobDocuments}
-      return allvalues
+      const allvalues = { dbValues, ...jobDocuments };
+      return allvalues;
     } catch (error) {
       console.log(
         "Error occurred while getting our proposals jobs from the database",
@@ -172,13 +172,26 @@ export class freelanceRepository implements IfreelanceRepository {
       const jobDocuments = await Job.find({
         _id: { $in: jobIds },
       });
-      const allvalues =  {dbValues,...jobDocuments}
-      return allvalues
+      const allvalues = { dbValues, ...jobDocuments };
+      return allvalues;
     } catch (error) {
       console.log(
         "Error occurred while getting proposal jobs from the database",
         error
       );
+      return null;
+    }
+  }
+  async proposalStatusDb(proposalId: string, action: string) {
+    try {
+      const proposal = await ProposalDb.findByIdAndUpdate(
+        proposalId,
+        { status: action },
+        { new: true }
+      ).exec();
+      return proposal ? proposal : null;
+    } catch (error) {
+      console.log("Error updating proposal Status", error);
       return null;
     }
   }

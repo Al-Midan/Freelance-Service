@@ -29,5 +29,13 @@ router.get(
   "/getJobRequests/:userId",
   controller.getJobRequests.bind(controller)
 );
+router.post(
+  "/proposalStatus/:proposalId",
+  controller.proposalStatus.bind(controller)
+);
+router.get(
+  "/jobDetailsWithId/:jobId",
+  controller.jobDetailsWithId.bind(controller)
+);
 
 export default router;
