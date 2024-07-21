@@ -80,7 +80,7 @@ export class freelanceController {
   async proposalStatus(req: Request, res: Response){
     try {
       const proposalId = req.params.proposalId
-      const action = req.body
+      const {action} = req.body
       console.log("proposalStatus", proposalId, action);
       const response = await this.freelanceService.changeProposalStatus(proposalId,action)
       res.status(200).json({message:"Proposal status updated",response})

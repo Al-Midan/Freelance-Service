@@ -48,7 +48,7 @@ const jobSchema: Schema = new Schema({
   },
   experienceLevel: {
     type: String,
-    enum: ['Beginner', 'Intermediate', 'Expert'],
+    enum: ['Entry Level', 'Intermediate', 'Expert'],
   },
   postedDate: {
     type: Date,

@@ -185,6 +185,8 @@ export class freelanceRepository implements IfreelanceRepository {
   }
   async proposalStatusDb(proposalId: string, action: string) {
     try {
+      console.log("proposalId",proposalId,action);
+      
       const proposal = await ProposalDb.findByIdAndUpdate(
         proposalId,
         { status: action },
@@ -222,6 +224,15 @@ export class freelanceRepository implements IfreelanceRepository {
       return updatedJob;
     } catch (error) {
       console.error("Error updating job:", error);
+      return null;
+    }
+  }
+  async deleteJobDb(jobId: string) {
+    try {
+      const jobDetails = await Job.findByIdAndDelete(jobId);
+      return jobDetails ? jobDetails : null;
+    } catch (error) {
+      console.log("Error Getting Job details", error);
       return null;
     }
   }

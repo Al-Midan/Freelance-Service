@@ -16,4 +16,5 @@ export interface IfreelanceRepository {
   proposalStatusDb(proposalId: string,action: string): Promise<IProposal | null>;
   jobdetailsDb(jobId: string): Promise<IJob | null>;
   UpdateJobDb(values: updateJobPost): Promise<IJob | null>;
+  deleteJobDb(jobId: string): Promise<IJob | null>;
 }
