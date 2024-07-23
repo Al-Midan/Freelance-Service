@@ -1,4 +1,5 @@
 import { CreateJob } from "../../domain/entitites/createJob";
+import { CombinedValues, IDbValues, IJobDocuments } from "../../domain/entitites/OurJobList";
 import { proposalPost } from "../../domain/entitites/sendProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
 import { kafkaConsumer } from "../broker/kafkaBroker/kafkaConsumer";
@@ -131,53 +132,49 @@ export class freelanceRepository implements IfreelanceRepository {
       return null;
     }
   }
-  async getJobRequests(userId: string) {
+  async getJobRequests(userId: string): Promise<CombinedValues | null> {
     try {
       await kafkaProducer.sendUserDetailsRequest(userId);
-      const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
-        userId
-      );
+      const userDetails = await kafkaConsumer.waitForUserDetailsResponse(userId);
       console.log("userDetails from kafka consumer", userDetails);
 
       if (!userDetails || !userDetails.email) {
         console.log("User details or email is undefined");
         return null;
       }
-      const dbValues = await ProposalDb.find({
-        jobOwnerEmail: userDetails.email,
-      });
+
+      const dbValues = await ProposalDb.find({ jobOwnerEmail: userDetails.email }) as IDbValues[];
       if (!dbValues || dbValues.length === 0) {
         return null;
       }
+
       const jobIds = dbValues.map((value) => value.jobId);
-      const jobDocuments = await Job.find({
-        _id: { $in: jobIds },
-      });
-      const allvalues = { dbValues, ...jobDocuments };
-      return allvalues;
+      const jobDocuments = await Job.find({ _id: { $in: jobIds } }) as IJobDocuments[];
+
+      return { dbValues, jobDocuments };
     } catch (error) {
       console.log(
-        "Error occurred while getting our proposals jobs from the database",
+        "Error occurred while getting job requests from the database",
         error
       );
       return null;
     }
   }
-  async getAllProposals(userId: string) {
+
+  async getAllProposals(userId: string): Promise<CombinedValues | null> {
     try {
-      const dbValues = await ProposalDb.find({ userId: userId });
+      const dbValues = await ProposalDb.find({ userId: userId }) as IDbValues[];
       if (!dbValues || dbValues.length === 0) {
         return null;
       }
+
       const jobIds = dbValues.map((value) => value.jobId);
-      const jobDocuments = await Job.find({
-        _id: { $in: jobIds },
-      });
-      const allvalues = { dbValues, ...jobDocuments };
-      return allvalues;
+      const jobDocuments = await Job.find({ _id: { $in: jobIds } }) as IJobDocuments[];
+
+      return { dbValues, jobDocuments };
     } catch (error) {
       console.log(
-        "Error occurred while getting proposal jobs from the database",
+        "Error occurred while getting proposals from the database",
         error
       );
       return null;
@@ -185,8 +182,8 @@ export class freelanceRepository implements IfreelanceRepository {
   }
   async proposalStatusDb(proposalId: string, action: string) {
     try {
-      console.log("proposalId",proposalId,action);
-      
+      console.log("proposalId", proposalId, action);
+
       const proposal = await ProposalDb.findByIdAndUpdate(
         proposalId,
         { status: action },

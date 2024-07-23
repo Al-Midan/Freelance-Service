@@ -1,7 +1,7 @@
 import mongoose, { Document } from 'mongoose';
 
-export interface IMergedJobProposal extends Document {
-  // Fields from IProposal
+// Define interface for dbValues
+export interface IDbValues extends Document {
   userId: mongoose.Types.ObjectId;
   jobId: mongoose.Types.ObjectId;
   jobOwner: string;
@@ -9,8 +9,10 @@ export interface IMergedJobProposal extends Document {
   proposalDescription: string;
   proposalStatus: string;
   proposalImage: string;
+}
 
-  // Fields from IJob
+// Define interface for jobDocuments
+export interface IJobDocuments extends Document {
   title: string;
   jobDescription: string;
   category: string;
@@ -26,3 +28,8 @@ export interface IMergedJobProposal extends Document {
   jobStatus: 'Open' | 'Closed';
   jobImage: string;
 }
+
+export type CombinedValues = {
+  dbValues: IDbValues[] | null;
+  jobDocuments: IJobDocuments[] | null;
+};

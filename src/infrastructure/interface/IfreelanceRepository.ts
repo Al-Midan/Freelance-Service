@@ -1,5 +1,5 @@
 import { CreateJob } from "../../domain/entitites/createJob";
-import { IMergedJobProposal } from "../../domain/entitites/OurJobList";
+import { CombinedValues } from "../../domain/entitites/OurJobList";
 import { returnProposal } from "../../domain/entitites/Proposalreturn";
 import { proposalPost } from "../../domain/entitites/sendProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
@@ -11,8 +11,8 @@ export interface IfreelanceRepository {
   GetJob(): Promise<IJob[] | null>;
   sendProposalDb(values: proposalPost): Promise<returnProposal | null>;
   getUserJobsDb(userId: string): Promise<IJob[] | null>;
-  getAllProposals(userId: string): Promise<any[] | null>;
-  getJobRequests(userId: string): Promise<any[] | null>;
+  getAllProposals(userId: string): Promise<CombinedValues | null>;
+  getJobRequests(userId: string): Promise<CombinedValues | null>;
   proposalStatusDb(proposalId: string,action: string): Promise<IProposal | null>;
   jobdetailsDb(jobId: string): Promise<IJob | null>;
   UpdateJobDb(values: updateJobPost): Promise<IJob | null>;
