@@ -51,10 +51,13 @@ export class freelanceRepository implements IfreelanceRepository {
           if (new Date(job.deadline) < currentTime && job.status !== "Closed") {
             job.status = "Closed";
             await job.save();
+          } else {
+            job.status = "Open";
+            await job.save();
           }
           return job;
         });
-
+  
         const updatedJobs = await Promise.all(updatePromises);
         return updatedJobs;
       }
@@ -117,6 +120,9 @@ export class freelanceRepository implements IfreelanceRepository {
           if (new Date(job.deadline) < currentTime && job.status !== "Closed") {
             job.status = "Closed";
             await job.save();
+          } else {
+            job.status = "Open";
+            await job.save();
           }
           return job;
         });
@@ -167,11 +173,23 @@ export class freelanceRepository implements IfreelanceRepository {
       if (!dbValues || dbValues.length === 0) {
         return null;
       }
-
+  
       const jobIds = dbValues.map((value) => value.jobId);
       const jobDocuments = await Job.find({ _id: { $in: jobIds } }) as IJobDocuments[];
-
-      return { dbValues, jobDocuments };
+  
+      const currentTime = new Date();
+      const updatePromises = jobDocuments.map(async (job) => {
+        if (new Date(job.deadline) < currentTime && job.status !== "Closed") {
+          job.status = "Closed";
+        } else if (job.status !== "Closed") {
+          job.status = "Open";
+        }
+        return job.save();
+      });
+  
+      const updatedJobDocuments = await Promise.all(updatePromises);
+  
+      return { dbValues, jobDocuments: updatedJobDocuments };
     } catch (error) {
       console.log(
         "Error occurred while getting proposals from the database",

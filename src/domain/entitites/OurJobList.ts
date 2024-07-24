@@ -14,7 +14,7 @@ export interface IDbValues extends Document {
 // Define interface for jobDocuments
 export interface IJobDocuments extends Document {
   title: string;
-  jobDescription: string;
+  description: string;
   category: string;
   skillsRequired: string[];
   budget: number;
@@ -25,8 +25,8 @@ export interface IJobDocuments extends Document {
   experienceLevel: 'Beginner' | 'Intermediate' | 'Expert';
   postedDate: Date;
   deadline: Date;
-  jobStatus: 'Open' | 'Closed';
-  jobImage: string;
+  status: 'Open' | 'Closed';
+  image: string;
 }
 
 export type CombinedValues = {
