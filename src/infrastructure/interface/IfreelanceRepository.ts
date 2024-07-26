@@ -18,4 +18,5 @@ export interface IfreelanceRepository {
   jobdetailsDb(jobId: string): Promise<IJob | null>;
   UpdateJobDb(values: updateJobPost): Promise<IJob | null>;
   deleteJobDb(jobId: string): Promise<IJob | null>;
+  adminJobBlock(jobId: string,isBlock:boolean): Promise<IJob | null>;
 }

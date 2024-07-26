@@ -54,4 +54,8 @@ export class freelanceUseCase implements IfreelanceUseCase {
     const dbresponse = await this.repository.deleteJobDb(jobId);
     return dbresponse ? dbresponse : null;
   }
+  async adminJobBlock(jobId: string,isBlock:boolean) {
+    const dbresponse = await this.repository.adminJobBlock(jobId,isBlock);
+    return dbresponse ? dbresponse : null;
+  }
 }

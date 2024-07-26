@@ -90,7 +90,10 @@ export class freelanceRepository implements IfreelanceRepository {
       }
       return null;
     } catch (error) {
-      console.log("Error occurred while getting jobs admin from the database", error);
+      console.log(
+        "Error occurred while getting jobs admin from the database",
+        error
+      );
       return null;
     }
   }
@@ -285,6 +288,20 @@ export class freelanceRepository implements IfreelanceRepository {
       return jobDetails ? jobDetails : null;
     } catch (error) {
       console.log("Error Getting Job details", error);
+      return null;
+    }
+  }
+  async adminJobBlock(jobId: string, isBlock: boolean) {
+    try {
+      const updatedJob = await Job.findByIdAndUpdate(
+        jobId,
+        { isBlock: isBlock },
+        { new: true }
+      );
+
+      return updatedJob ? updatedJob : null;
+    } catch (error) {
+      console.error("Error updating job Block", error);
       return null;
     }
   }

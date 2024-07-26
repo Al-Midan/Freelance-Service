@@ -18,4 +18,5 @@ export interface IfreelanceUseCase {
   jobDetailsWithId(jobId: string): Promise<IJob | null>;
   UpdateJob(values: updateJobPost): Promise<IJob | null>;
   deleteJob(jobId: string): Promise<IJob | null>;
+  adminJobBlock(jobId: string,isBlock:boolean): Promise<IJob | null>;
 }

@@ -30,7 +30,9 @@ export class freelanceController {
   async getAllAdminJob(req: Request, res: Response) {
     try {
       const response = await this.freelanceService.getAllAdminJob();
-      res.status(200).json({ message: " Got All Admin Side Jobs Successfully", response });
+      res
+        .status(200)
+        .json({ message: " Got All Admin Side Jobs Successfully", response });
     } catch (error) {
       console.error("Error occured in getting  Admin Job", error);
       res.status(500).json({ message: "Job getting Failed" });
@@ -86,49 +88,74 @@ export class freelanceController {
       res.status(500).json({ message: "Job Request getting Failed" });
     }
   }
-  async proposalStatus(req: Request, res: Response){
+  async proposalStatus(req: Request, res: Response) {
     try {
-      const proposalId = req.params.proposalId
-      const {action} = req.body
+      const proposalId = req.params.proposalId;
+      const { action } = req.body;
       console.log("proposalStatus", proposalId, action);
-      const response = await this.freelanceService.changeProposalStatus(proposalId,action)
-      res.status(200).json({message:"Proposal status updated",response})
+      const response = await this.freelanceService.changeProposalStatus(
+        proposalId,
+        action
+      );
+      res.status(200).json({ message: "Proposal status updated", response });
     } catch (error) {
       console.error("Error occured in Changing In Proposal Status", error);
-      res.status(500).json({ message: "Proposal Status Change getting Failed" });
+      res
+        .status(500)
+        .json({ message: "Proposal Status Change getting Failed" });
     }
   }
-  async jobDetailsWithId(req: Request,res: Response){
+  async jobDetailsWithId(req: Request, res: Response) {
     try {
-      const jobId  = req.params.jobId;
+      const jobId = req.params.jobId;
       const response = await this.freelanceService.jobDetailsWithId(jobId);
-      res.status(200).json({ message:"Job Details with Id Fetched successfully",response});
+      res
+        .status(200)
+        .json({
+          message: "Job Details with Id Fetched successfully",
+          response,
+        });
     } catch (error) {
-      console.error("error Occured While processing The Job Details",error);
-      res.status(500).json({ message: "error Occured While processing The Job Details"});
+      console.error("error Occured While processing The Job Details", error);
+      res
+        .status(500)
+        .json({ message: "error Occured While processing The Job Details" });
     }
   }
-  async jobEdit(req: Request,res: Response){
-  console.log("req",req.body);
-  try {
-    const values = req.body;
+  async jobEdit(req: Request, res: Response) {
+    console.log("req", req.body);
+    try {
+      const values = req.body;
       const jobId = req.params.jobId;
-      const allValues = {jobId,...values};
+      const allValues = { jobId, ...values };
       const response = await this.freelanceService.UpdateJob(allValues);
-      res.status(200).json({message:"Job Updated Successfully",response})
-  } catch (error) {
-    console.error("error Occured While Update The Job Details",error);
-      res.status(500).json({ message: "error Occured While Update The Job Details"});
+      res.status(200).json({ message: "Job Updated Successfully", response });
+    } catch (error) {
+      console.error("error Occured While Update The Job Details", error);
+      res
+        .status(500)
+        .json({ message: "error Occured While Update The Job Details" });
+    }
   }
-  }
-  async deleteJob(req: Request,res: Response){
-  try {
+  async deleteJob(req: Request, res: Response) {
+    try {
       const jobId = req.params.jobId;
       const response = await this.freelanceService.deleteJob(jobId);
-      res.status(200).json({message:"Job Deleted Successfully",response})
-  } catch (error) {
-    console.error("error Occured While Delete The Job ",error);
-      res.status(500).json({ message: "error Occured While Delete The Job "});
+      res.status(200).json({ message: "Job Deleted Successfully", response });
+    } catch (error) {
+      console.error("error Occured While Delete The Job ", error);
+      res.status(500).json({ message: "error Occured While Delete The Job " });
+    }
   }
+  async jobBlock(req: Request, res: Response) {
+    try {
+      const { jobId, isBlock } = req.body;
+      await this.freelanceService.adminJobBlock(jobId, isBlock);
+      res.status(200).json({ message: "Admin request changed successfully" });
+    } catch (error) {
+      console.error("Error occurred in admin side jobBlock", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   }
+  
 }

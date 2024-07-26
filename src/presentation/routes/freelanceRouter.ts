@@ -46,5 +46,9 @@ router.delete(
   "/deleteJob/:jobId",
   controller.deleteJob.bind(controller)
 );
+router.post(
+  "/jobBlock",
+  controller.jobBlock.bind(controller)
+);
 
 export default router;
