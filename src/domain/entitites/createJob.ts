@@ -12,7 +12,7 @@ export interface CreateJob {
     status: string;
     username: string;
     email: string;
-    image:CreateJobFile
+    image:CreateJobFile;
   }
   
   interface CreateJobFile {

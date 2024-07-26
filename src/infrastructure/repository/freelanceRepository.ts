@@ -1,5 +1,9 @@
 import { CreateJob } from "../../domain/entitites/createJob";
-import { CombinedValues, IDbValues, IJobDocuments } from "../../domain/entitites/OurJobList";
+import {
+  CombinedValues,
+  IDbValues,
+  IJobDocuments,
+} from "../../domain/entitites/OurJobList";
 import { proposalPost } from "../../domain/entitites/sendProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
 import { kafkaConsumer } from "../broker/kafkaBroker/kafkaConsumer";
@@ -44,21 +48,20 @@ export class freelanceRepository implements IfreelanceRepository {
   }
   async GetJob() {
     try {
-      const dbValues = await Job.find();
+      const dbValues = await Job.find({ isBlock: false });
       if (dbValues) {
         const currentTime = new Date();
         const updatePromises = dbValues.map(async (job) => {
           if (new Date(job.deadline) < currentTime && job.status !== "Closed") {
             job.status = "Closed";
-            await job.save();
-          } else {
+          } else if (job.status !== "Open") {
             job.status = "Open";
-            await job.save();
           }
+          await job.save();
           return job;
         });
-  
         const updatedJobs = await Promise.all(updatePromises);
+        console.log("updatedJobs", updatedJobs);
         return updatedJobs;
       }
       return null;
@@ -141,7 +144,9 @@ export class freelanceRepository implements IfreelanceRepository {
   async getJobRequests(userId: string): Promise<CombinedValues | null> {
     try {
       await kafkaProducer.sendUserDetailsRequest(userId);
-      const userDetails = await kafkaConsumer.waitForUserDetailsResponse(userId);
+      const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
+        userId
+      );
       console.log("userDetails from kafka consumer", userDetails);
 
       if (!userDetails || !userDetails.email) {
@@ -149,13 +154,17 @@ export class freelanceRepository implements IfreelanceRepository {
         return null;
       }
 
-      const dbValues = await ProposalDb.find({ jobOwnerEmail: userDetails.email }) as IDbValues[];
+      const dbValues = (await ProposalDb.find({
+        jobOwnerEmail: userDetails.email,
+      })) as IDbValues[];
       if (!dbValues || dbValues.length === 0) {
         return null;
       }
 
       const jobIds = dbValues.map((value) => value.jobId);
-      const jobDocuments = await Job.find({ _id: { $in: jobIds } }) as IJobDocuments[];
+      const jobDocuments = (await Job.find({
+        _id: { $in: jobIds },
+      })) as IJobDocuments[];
 
       return { dbValues, jobDocuments };
     } catch (error) {
@@ -169,14 +178,18 @@ export class freelanceRepository implements IfreelanceRepository {
 
   async getAllProposals(userId: string): Promise<CombinedValues | null> {
     try {
-      const dbValues = await ProposalDb.find({ userId: userId }) as IDbValues[];
+      const dbValues = (await ProposalDb.find({
+        userId: userId,
+      })) as IDbValues[];
       if (!dbValues || dbValues.length === 0) {
         return null;
       }
-  
+
       const jobIds = dbValues.map((value) => value.jobId);
-      const jobDocuments = await Job.find({ _id: { $in: jobIds } }) as IJobDocuments[];
-  
+      const jobDocuments = (await Job.find({
+        _id: { $in: jobIds },
+      })) as IJobDocuments[];
+
       const currentTime = new Date();
       const updatePromises = jobDocuments.map(async (job) => {
         if (new Date(job.deadline) < currentTime && job.status !== "Closed") {
@@ -186,9 +199,9 @@ export class freelanceRepository implements IfreelanceRepository {
         }
         return job.save();
       });
-  
+
       const updatedJobDocuments = await Promise.all(updatePromises);
-  
+
       return { dbValues, jobDocuments: updatedJobDocuments };
     } catch (error) {
       console.log(

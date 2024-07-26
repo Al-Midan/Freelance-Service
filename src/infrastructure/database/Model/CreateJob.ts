@@ -6,15 +6,16 @@ export interface IJob extends Document {
   category: string;
   skillsRequired: string[];
   budget: number;
-  paymentType: 'Fixed Price' | 'Hourly';
+  paymentType: "Fixed Price" | "Hourly";
   duration: string;
   username: string;
   email: string;
-  experienceLevel: 'Beginner' | 'Intermediate' | 'Expert';
+  experienceLevel: "Beginner" | "Intermediate" | "Expert";
   postedDate: Date;
   deadline: Date;
-  status: 'Open' | 'Closed';
-  image:string;
+  status: "Open" | "Closed";
+  image: string;
+  isBlock: boolean;
 }
 
 const jobSchema: Schema = new Schema({
@@ -35,7 +36,7 @@ const jobSchema: Schema = new Schema({
   },
   paymentType: {
     type: String,
-    enum: ['Fixed Price', 'Hourly'],
+    enum: ["Fixed Price", "Hourly"],
   },
   duration: {
     type: String,
@@ -48,7 +49,7 @@ const jobSchema: Schema = new Schema({
   },
   experienceLevel: {
     type: String,
-    enum: ['Entry Level', 'Intermediate', 'Expert'],
+    enum: ["Entry Level", "Intermediate", "Expert"],
   },
   postedDate: {
     type: Date,
@@ -59,10 +60,14 @@ const jobSchema: Schema = new Schema({
   },
   status: {
     type: String,
-    enum: ['Open', 'Closed'],
+    enum: ["Open", "Closed"],
   },
   image: {
     type: String,
+  },
+  isBlock: {
+    type: Boolean,
+    default: "true",
   },
 });
 
