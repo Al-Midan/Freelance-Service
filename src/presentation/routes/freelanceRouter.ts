@@ -15,6 +15,7 @@ router.post(
   controller.createJob.bind(controller)
 );
 router.get("/getAllJob", controller.getALlJob.bind(controller));
+router.get("/getAllAdminJob", controller.getAllAdminJob.bind(controller));
 router.post(
   "/sendProposal",
   upload.single("cv"),

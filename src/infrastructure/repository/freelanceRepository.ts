@@ -70,6 +70,30 @@ export class freelanceRepository implements IfreelanceRepository {
       return null;
     }
   }
+  async getAllAdminJob() {
+    try {
+      const dbValues = await Job.find();
+      if (dbValues) {
+        const currentTime = new Date();
+        const updatePromises = dbValues.map(async (job) => {
+          if (new Date(job.deadline) < currentTime && job.status !== "Closed") {
+            job.status = "Closed";
+          } else if (job.status !== "Open") {
+            job.status = "Open";
+          }
+          await job.save();
+          return job;
+        });
+        const updatedJobs = await Promise.all(updatePromises);
+        console.log("updatedJobs", updatedJobs);
+        return updatedJobs;
+      }
+      return null;
+    } catch (error) {
+      console.log("Error occurred while getting jobs admin from the database", error);
+      return null;
+    }
+  }
 
   async sendProposalDb(values: proposalPost): Promise<any> {
     try {

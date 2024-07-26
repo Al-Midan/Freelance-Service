@@ -27,6 +27,15 @@ export class freelanceController {
       res.status(500).json({ message: "Job getting Failed" });
     }
   }
+  async getAllAdminJob(req: Request, res: Response) {
+    try {
+      const response = await this.freelanceService.getAllAdminJob();
+      res.status(200).json({ message: " Got All Admin Side Jobs Successfully", response });
+    } catch (error) {
+      console.error("Error occured in getting  Admin Job", error);
+      res.status(500).json({ message: "Job getting Failed" });
+    }
+  }
   async proposalPost(req: Request, res: Response) {
     try {
       console.log("req.body", req.body);

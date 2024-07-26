@@ -9,6 +9,7 @@ import { IProposal } from "../database/Model/ProposalDb";
 export interface IfreelanceRepository {
   createJob(values: CreateJob): Promise<IJob | null>;
   GetJob(): Promise<IJob[] | null>;
+  getAllAdminJob(): Promise<IJob[] | null>;
   sendProposalDb(values: proposalPost): Promise<returnProposal | null>;
   getUserJobsDb(userId: string): Promise<IJob[] | null>;
   getAllProposals(userId: string): Promise<CombinedValues | null>;
