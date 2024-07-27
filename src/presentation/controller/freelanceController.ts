@@ -171,5 +171,14 @@ export class freelanceController {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
+  async getAdminSkill(req: Request, res: Response) {
+    try {
+      const response = await this.freelanceService.getAdminSkill()
+      res.status(200).json({ message: "ADMIN SIDE SKILL DATAS Fecthed Successfully",response });
+    } catch (error) {
+      console.error("Error occurred in ADMIN SIDE SKIILL GET ", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
   
 }

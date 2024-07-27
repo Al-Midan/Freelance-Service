@@ -22,4 +22,5 @@ export interface IfreelanceUseCase {
   deleteJob(jobId: string): Promise<IJob | null>;
   adminJobBlock(jobId: string,isBlock:boolean): Promise<IJob | null>;
   createSkill(allValues: CreateSkillALL): Promise<ISkill | null>;
+  getAdminSkill(): Promise<ISkill[] | null>;
 }

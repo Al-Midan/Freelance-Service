@@ -55,5 +55,11 @@ router.post(
   upload.single("image"),
   controller.createSkill.bind(controller)
 );
+router.get(
+  "/getAdminSkill",controller.getAdminSkill.bind(controller)
+);
+// router.post(
+//   "/getAdminSkill",controller.getAdminSkill.bind(controller)
+// );
 
 export default router;

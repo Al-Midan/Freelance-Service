@@ -341,4 +341,13 @@ export class freelanceRepository implements IfreelanceRepository {
       return null;
     }
   }
+  async getAdminSkillDb(){
+    try {
+      const skillDb = await Skill.find()
+      return skillDb ? skillDb : null;
+    } catch (error) {
+      console.error("Error Getting Admin Skill", error);
+      return null;
+    }
+  }
 }

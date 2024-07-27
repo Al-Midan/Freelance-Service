@@ -63,4 +63,8 @@ export class freelanceUseCase implements IfreelanceUseCase {
     const dbresponse = await this.repository.createSkill(allValues);
     return dbresponse ? dbresponse : null;
   }
+  async getAdminSkill(){
+    const dbresponse = await this.repository.getAdminSkillDb();
+    return dbresponse ? dbresponse : null;
+  }
 }

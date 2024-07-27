@@ -22,4 +22,5 @@ export interface IfreelanceRepository {
   deleteJobDb(jobId: string): Promise<IJob | null>;
   adminJobBlock(jobId: string,isBlock:boolean): Promise<IJob | null>;
   createSkill(allValues: CreateSkillALL): Promise<ISkill | null>;
+  getAdminSkillDb(): Promise<ISkill[] | null>;
 }
