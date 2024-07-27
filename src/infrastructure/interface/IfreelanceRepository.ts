@@ -23,4 +23,5 @@ export interface IfreelanceRepository {
   adminJobBlock(jobId: string,isBlock:boolean): Promise<IJob | null>;
   createSkill(allValues: CreateSkillALL): Promise<ISkill | null>;
   getAdminSkillDb(): Promise<ISkill[] | null>;
+  skillBlockDb(skillId:string,isBlock:boolean): Promise<ISkill | null>;
 }

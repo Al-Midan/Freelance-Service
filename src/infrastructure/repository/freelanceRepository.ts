@@ -308,42 +308,54 @@ export class freelanceRepository implements IfreelanceRepository {
     }
   }
 
-
-  async createSkill(allValues: CreateSkillALL){
+  async createSkill(allValues: CreateSkillALL) {
     try {
       const s3Response: any = await uploadS3Image(allValues.image);
       if (s3Response.error) {
         console.error("Error uploading image to S3:", s3Response.error);
-  
+
         throw new Error("Failed to upload image to S3");
       }
-  
+
       console.log("URL of the image from the S3 bucket:", s3Response.Location);
       const dbValues = {
-        title:allValues.title,
-        description:allValues.description,
-        category:allValues.category,
-        proficiency:allValues.proficiency,
-        yearsOfExperience:allValues.yearsOfExperience,
-        availability:allValues.availability,
-        username:allValues.username,
-        email:allValues.email,
-        image:s3Response.Location
-      }
-      
-    const newSkill = new Skill(dbValues);
-    const SkillDbResponse = await newSkill.save();
-    console.log("Skill Created  successfully:", SkillDbResponse);
+        title: allValues.title,
+        description: allValues.description,
+        category: allValues.category,
+        proficiency: allValues.proficiency,
+        yearsOfExperience: allValues.yearsOfExperience,
+        availability: allValues.availability,
+        username: allValues.username,
+        email: allValues.email,
+        image: s3Response.Location,
+      };
 
-    return SkillDbResponse ? SkillDbResponse : null;
+      const newSkill = new Skill(dbValues);
+      const SkillDbResponse = await newSkill.save();
+      console.log("Skill Created  successfully:", SkillDbResponse);
+
+      return SkillDbResponse ? SkillDbResponse : null;
     } catch (error) {
       console.error("Error Creating Skill", error);
       return null;
     }
   }
-  async getAdminSkillDb(){
+  async getAdminSkillDb() {
     try {
-      const skillDb = await Skill.find()
+      const skillDb = await Skill.find();
+      return skillDb ? skillDb : null;
+    } catch (error) {
+      console.error("Error Getting Admin Skill", error);
+      return null;
+    }
+  }
+  async skillBlockDb(skillId: string, isBlock: boolean) {
+    try {
+      const skillDb = await Skill.findByIdAndUpdate(
+        skillId,
+        { isBlock: isBlock },
+        { new: true }
+      );
       return skillDb ? skillDb : null;
     } catch (error) {
       console.error("Error Getting Admin Skill", error);

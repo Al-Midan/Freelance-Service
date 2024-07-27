@@ -58,8 +58,8 @@ router.post(
 router.get(
   "/getAdminSkill",controller.getAdminSkill.bind(controller)
 );
-// router.post(
-//   "/getAdminSkill",controller.getAdminSkill.bind(controller)
-// );
+router.post(
+  "/skillBlock",controller.skillBlock.bind(controller)
+);
 
 export default router;
