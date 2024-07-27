@@ -1,9 +1,11 @@
 import { CreateJob } from "../../domain/entitites/createJob";
+import { CreateSkillALL } from "../../domain/entitites/createSkill";
 import { CombinedValues } from "../../domain/entitites/OurJobList";
 import { returnProposal } from "../../domain/entitites/Proposalreturn";
 import { proposalPost } from "../../domain/entitites/sendProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
 import { IJob } from "../../infrastructure/database/Model/CreateJob";
+import { ISkill } from "../../infrastructure/database/Model/CreateSkill";
 import { IProposal } from "../../infrastructure/database/Model/ProposalDb";
 
 export interface IfreelanceUseCase {
@@ -19,4 +21,5 @@ export interface IfreelanceUseCase {
   UpdateJob(values: updateJobPost): Promise<IJob | null>;
   deleteJob(jobId: string): Promise<IJob | null>;
   adminJobBlock(jobId: string,isBlock:boolean): Promise<IJob | null>;
+  createSkill(allValues: CreateSkillALL): Promise<ISkill | null>;
 }

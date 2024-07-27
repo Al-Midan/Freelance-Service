@@ -157,5 +157,19 @@ export class freelanceController {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
+  async createSkill(req: Request, res: Response) {
+    try {
+      console.log(" req.body", req.body);
+      console.log(" req.file", req.file);
+      const values = req.body;
+      const image = req.file;
+      const allValues = {...values,image}
+      const response = await this.freelanceService.createSkill(allValues)
+      res.status(200).json({ message: "Skill Created Successfully",response });
+    } catch (error) {
+      console.error("Error occurred in skill Creation", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
   
 }

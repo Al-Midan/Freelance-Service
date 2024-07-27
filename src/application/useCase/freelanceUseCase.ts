@@ -1,4 +1,5 @@
 import { CreateJob } from "../../domain/entitites/createJob";
+import { CreateSkillALL } from "../../domain/entitites/createSkill";
 import { proposalPost } from "../../domain/entitites/sendProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
 import { IfreelanceRepository } from "../../infrastructure/interface/IfreelanceRepository";
@@ -56,6 +57,10 @@ export class freelanceUseCase implements IfreelanceUseCase {
   }
   async adminJobBlock(jobId: string,isBlock:boolean) {
     const dbresponse = await this.repository.adminJobBlock(jobId,isBlock);
+    return dbresponse ? dbresponse : null;
+  }
+  async createSkill(allValues: CreateSkillALL){
+    const dbresponse = await this.repository.createSkill(allValues);
     return dbresponse ? dbresponse : null;
   }
 }

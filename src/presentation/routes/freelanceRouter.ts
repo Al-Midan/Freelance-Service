@@ -50,5 +50,10 @@ router.post(
   "/jobBlock",
   controller.jobBlock.bind(controller)
 );
+router.post(
+  "/createSkill",
+  upload.single("image"),
+  controller.createSkill.bind(controller)
+);
 
 export default router;
