@@ -24,4 +24,5 @@ export interface IfreelanceUseCase {
   createSkill(allValues: CreateSkillALL): Promise<ISkill | null>;
   getAdminSkill(): Promise<ISkill[] | null>;
   skillBlock(skillId:string,isBlock:boolean): Promise<ISkill | null>;
+  getSkill(): Promise<ISkill[] | null>;
 }

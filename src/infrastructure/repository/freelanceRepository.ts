@@ -349,6 +349,15 @@ export class freelanceRepository implements IfreelanceRepository {
       return null;
     }
   }
+  async getSkill() {
+    try {
+      const skillDb = await Skill.find({isBlock:false});
+      return skillDb ? skillDb : null;
+    } catch (error) {
+      console.error("Error Getting  Skill", error);
+      return null;
+    }
+  }
   async skillBlockDb(skillId: string, isBlock: boolean) {
     try {
       const skillDb = await Skill.findByIdAndUpdate(

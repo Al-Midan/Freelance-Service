@@ -178,6 +178,15 @@ export class freelanceController {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
+  async getSkill(req: Request, res: Response) {
+    try {
+      const response = await this.freelanceService.getSkill()
+      res.status(200).json({ message: "  SKILL DATAS Fecthed Successfully",response });
+    } catch (error) {
+      console.error("Error occurred in  SIDE SKIILL GET ", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
   async skillBlock(req: Request, res: Response) {
     try {
       const { skillId, isBlock } = req.body;

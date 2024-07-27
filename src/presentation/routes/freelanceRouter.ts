@@ -61,5 +61,8 @@ router.get(
 router.post(
   "/skillBlock",controller.skillBlock.bind(controller)
 );
+router.get(
+  "/getSkill",controller.getSkill.bind(controller)
+);
 
 export default router;
