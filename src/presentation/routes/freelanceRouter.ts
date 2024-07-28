@@ -27,7 +27,10 @@ router.post(
   controller.skillProposal.bind(controller)
 );
 router.get("/getUserJobs/:userId", controller.getuserALlJob.bind(controller));
-router.get("/getUserSkills/:userId", controller.getuserALlSkills.bind(controller));
+router.get(
+  "/getUserSkills/:userId",
+  controller.getuserALlSkills.bind(controller)
+);
 router.get(
   "/GetAllProposals/:userId",
   controller.getAllProposals.bind(controller)
@@ -56,35 +59,21 @@ router.get(
   "/jobDetailsWithId/:jobId",
   controller.jobDetailsWithId.bind(controller)
 );
-router.put(
-  "/jobEdit/:jobId",
-  controller.jobEdit.bind(controller)
+router.get(
+  "/skillDetailsWithId/:skillId",
+  controller.skillDetailsWithId.bind(controller)
 );
-router.delete(
-  "/deleteJob/:jobId",
-  controller.deleteJob.bind(controller)
-);
-router.delete(
-  "/deleteSkill/:jobId",
-  controller.deleteSkill.bind(controller)
-);
-router.post(
-  "/jobBlock",
-  controller.jobBlock.bind(controller)
-);
+router.put("/jobEdit/:jobId", controller.jobEdit.bind(controller));
+router.delete("/deleteJob/:jobId", controller.deleteJob.bind(controller));
+router.delete("/deleteSkill/:jobId", controller.deleteSkill.bind(controller));
+router.post("/jobBlock", controller.jobBlock.bind(controller));
 router.post(
   "/createSkill",
   upload.single("image"),
   controller.createSkill.bind(controller)
 );
-router.get(
-  "/getAdminSkill",controller.getAdminSkill.bind(controller)
-);
-router.post(
-  "/skillBlock",controller.skillBlock.bind(controller)
-);
-router.get(
-  "/getSkill",controller.getSkill.bind(controller)
-);
+router.get("/getAdminSkill", controller.getAdminSkill.bind(controller));
+router.post("/skillBlock", controller.skillBlock.bind(controller));
+router.get("/getSkill", controller.getSkill.bind(controller));
 
 export default router;

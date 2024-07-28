@@ -22,15 +22,22 @@ export interface IfreelanceUseCase {
   getAllSkillProposals(userId: string): Promise<CombinedSkillValues | null>;
   getJobRequests(userId: string): Promise<CombinedValues | null>;
   getSkillRequests(userId: string): Promise<CombinedSkillValues | null>;
-  changeProposalStatus(proposalId: string,action: string): Promise<IProposal | null>;
-  changeSkillProposalStatus(proposalId: string,action: string): Promise<IskillProposal | null>;
+  changeProposalStatus(
+    proposalId: string,
+    action: string
+  ): Promise<IProposal | null>;
+  changeSkillProposalStatus(
+    proposalId: string,
+    action: string
+  ): Promise<IskillProposal | null>;
   jobDetailsWithId(jobId: string): Promise<IJob | null>;
+  SkillDetailsWithId(SkillId: string): Promise<ISkill | null>;
   UpdateJob(values: updateJobPost): Promise<IJob | null>;
   deleteJob(jobId: string): Promise<IJob | null>;
   deleteSkill(skillId: string): Promise<ISkill | null>;
-  adminJobBlock(jobId: string,isBlock:boolean): Promise<IJob | null>;
+  adminJobBlock(jobId: string, isBlock: boolean): Promise<IJob | null>;
   createSkill(allValues: CreateSkillALL): Promise<ISkill | null>;
   getAdminSkill(): Promise<ISkill[] | null>;
-  skillBlock(skillId:string,isBlock:boolean): Promise<ISkill | null>;
+  skillBlock(skillId: string, isBlock: boolean): Promise<ISkill | null>;
   getSkill(): Promise<ISkill[] | null>;
 }

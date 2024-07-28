@@ -22,15 +22,22 @@ export interface IfreelanceRepository {
   getAllSkillProposals(userId: string): Promise<CombinedSkillValues | null>;
   getJobRequests(userId: string): Promise<CombinedValues | null>;
   getSkillRequests(userId: string): Promise<CombinedSkillValues | null>;
-  proposalStatusDb(proposalId: string,action: string): Promise<IProposal | null>;
-  skillProposalStatusDb(proposalId: string,action: string): Promise<IskillProposal | null>;
+  proposalStatusDb(
+    proposalId: string,
+    action: string
+  ): Promise<IProposal | null>;
+  skillProposalStatusDb(
+    proposalId: string,
+    action: string
+  ): Promise<IskillProposal | null>;
   jobdetailsDb(jobId: string): Promise<IJob | null>;
+  skilldetailsDb(skillId: string): Promise<ISkill | null>;
   UpdateJobDb(values: updateJobPost): Promise<IJob | null>;
   deleteJobDb(jobId: string): Promise<IJob | null>;
   deleteSkillDb(skillId: string): Promise<ISkill | null>;
-  adminJobBlock(jobId: string,isBlock:boolean): Promise<IJob | null>;
+  adminJobBlock(jobId: string, isBlock: boolean): Promise<IJob | null>;
   createSkill(allValues: CreateSkillALL): Promise<ISkill | null>;
   getAdminSkillDb(): Promise<ISkill[] | null>;
-  skillBlockDb(skillId:string,isBlock:boolean): Promise<ISkill | null>;
+  skillBlockDb(skillId: string, isBlock: boolean): Promise<ISkill | null>;
   getSkill(): Promise<ISkill[] | null>;
 }

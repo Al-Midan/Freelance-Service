@@ -56,16 +56,26 @@ export class freelanceUseCase implements IfreelanceUseCase {
     const dbresponse = await this.repository.getSkillRequests(userId);
     return dbresponse ? dbresponse : null;
   }
-  async changeProposalStatus(proposalId: string,action: string) {
-    const dbresponse = await this.repository.proposalStatusDb(proposalId,action);
+  async changeProposalStatus(proposalId: string, action: string) {
+    const dbresponse = await this.repository.proposalStatusDb(
+      proposalId,
+      action
+    );
     return dbresponse ? dbresponse : null;
   }
-  async changeSkillProposalStatus(proposalId: string,action: string) {
-    const dbresponse = await this.repository.skillProposalStatusDb(proposalId,action);
+  async changeSkillProposalStatus(proposalId: string, action: string) {
+    const dbresponse = await this.repository.skillProposalStatusDb(
+      proposalId,
+      action
+    );
     return dbresponse ? dbresponse : null;
   }
   async jobDetailsWithId(jobId: string) {
     const dbresponse = await this.repository.jobdetailsDb(jobId);
+    return dbresponse ? dbresponse : null;
+  }
+  async SkillDetailsWithId(SkillId: string) {
+    const dbresponse = await this.repository.skilldetailsDb(SkillId);
     return dbresponse ? dbresponse : null;
   }
   async UpdateJob(values: updateJobPost) {
@@ -80,24 +90,24 @@ export class freelanceUseCase implements IfreelanceUseCase {
     const dbresponse = await this.repository.deleteSkillDb(skillId);
     return dbresponse ? dbresponse : null;
   }
-  async adminJobBlock(jobId: string,isBlock:boolean) {
-    const dbresponse = await this.repository.adminJobBlock(jobId,isBlock);
+  async adminJobBlock(jobId: string, isBlock: boolean) {
+    const dbresponse = await this.repository.adminJobBlock(jobId, isBlock);
     return dbresponse ? dbresponse : null;
   }
-  async createSkill(allValues: CreateSkillALL){
+  async createSkill(allValues: CreateSkillALL) {
     const dbresponse = await this.repository.createSkill(allValues);
     return dbresponse ? dbresponse : null;
   }
-  async getAdminSkill(){
+  async getAdminSkill() {
     const dbresponse = await this.repository.getAdminSkillDb();
     return dbresponse ? dbresponse : null;
   }
-  async getSkill(){
+  async getSkill() {
     const dbresponse = await this.repository.getSkill();
     return dbresponse ? dbresponse : null;
   }
-  async skillBlock(skillId:string,isBlock:boolean){
-    const dbresponse = await this.repository.skillBlockDb(skillId,isBlock);
+  async skillBlock(skillId: string, isBlock: boolean) {
+    const dbresponse = await this.repository.skillBlockDb(skillId, isBlock);
     return dbresponse ? dbresponse : null;
   }
 }
