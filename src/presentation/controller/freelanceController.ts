@@ -131,6 +131,23 @@ export class freelanceController {
         .json({ message: "Proposal Status Change getting Failed" });
     }
   }
+  async skillProposalStatus(req: Request, res: Response) {
+    try {
+      const proposalId = req.params.proposalId;
+      const { action } = req.body;
+      console.log("proposalStatus", proposalId, action);
+      const response = await this.freelanceService.changeSkillProposalStatus(
+        proposalId,
+        action
+      );
+      res.status(200).json({ message: "Proposal status updated Skill", response });
+    } catch (error) {
+      console.error("Error occured in Changing In Proposal Status Skill", error);
+      res
+        .status(500)
+        .json({ message: "Proposal Status Change getting Failed Skill" });
+    }
+  }
   async jobDetailsWithId(req: Request, res: Response) {
     try {
       const jobId = req.params.jobId;

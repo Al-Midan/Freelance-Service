@@ -20,6 +20,7 @@ export interface IfreelanceUseCase {
   getAllProposals(userId: string): Promise<CombinedValues | null>;
   getJobRequests(userId: string): Promise<CombinedValues | null>;
   changeProposalStatus(proposalId: string,action: string): Promise<IProposal | null>;
+  changeSkillProposalStatus(proposalId: string,action: string): Promise<IskillProposal | null>;
   jobDetailsWithId(jobId: string): Promise<IJob | null>;
   UpdateJob(values: updateJobPost): Promise<IJob | null>;
   deleteJob(jobId: string): Promise<IJob | null>;

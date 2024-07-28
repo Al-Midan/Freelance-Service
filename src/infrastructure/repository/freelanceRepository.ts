@@ -307,6 +307,19 @@ export class freelanceRepository implements IfreelanceRepository {
       return null;
     }
   }
+  async skillProposalStatusDb(proposalId: string, action: string) {
+    try {
+      console.log("proposalId", proposalId, action);
+
+      const proposal = await skillProposalDb
+        .findByIdAndUpdate(proposalId, { status: action }, { new: true })
+        .exec();
+      return proposal ? proposal : null;
+    } catch (error) {
+      console.log("Error updating proposal Skill Status", error);
+      return null;
+    }
+  }
   async jobdetailsDb(jobId: string) {
     try {
       const jobDetails = await Job.findById(jobId);

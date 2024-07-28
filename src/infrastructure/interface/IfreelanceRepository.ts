@@ -20,6 +20,7 @@ export interface IfreelanceRepository {
   getAllProposals(userId: string): Promise<CombinedValues | null>;
   getJobRequests(userId: string): Promise<CombinedValues | null>;
   proposalStatusDb(proposalId: string,action: string): Promise<IProposal | null>;
+  skillProposalStatusDb(proposalId: string,action: string): Promise<IskillProposal | null>;
   jobdetailsDb(jobId: string): Promise<IJob | null>;
   UpdateJobDb(values: updateJobPost): Promise<IJob | null>;
   deleteJobDb(jobId: string): Promise<IJob | null>;

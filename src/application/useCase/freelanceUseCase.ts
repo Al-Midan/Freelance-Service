@@ -52,6 +52,10 @@ export class freelanceUseCase implements IfreelanceUseCase {
     const dbresponse = await this.repository.proposalStatusDb(proposalId,action);
     return dbresponse ? dbresponse : null;
   }
+  async changeSkillProposalStatus(proposalId: string,action: string) {
+    const dbresponse = await this.repository.skillProposalStatusDb(proposalId,action);
+    return dbresponse ? dbresponse : null;
+  }
   async jobDetailsWithId(jobId: string) {
     const dbresponse = await this.repository.jobdetailsDb(jobId);
     return dbresponse ? dbresponse : null;
