@@ -279,11 +279,11 @@ export class freelanceRepository implements IfreelanceRepository {
       }
 
       const skillIds = dbValues.map((value) => value.skillId);
-      const jobDocuments = (await Job.find({
+      const skillDocuments = (await Skill.find({
         _id: { $in: skillIds },
       })) as ISkill[];
 
-      return { dbValues, jobDocuments };
+      return { dbValues, skillDocuments };
     } catch (error) {
       console.log(
         "Error occurred while getting skill requests from the database",
@@ -338,10 +338,10 @@ export class freelanceRepository implements IfreelanceRepository {
       }
 
       const skillIds = dbValues.map((value) => value.skillId);
-      const jobDocuments = (await Skill.find({
+      const skillDocuments = (await Skill.find({
         _id: { $in: skillIds },
       })) as ISkill[];
-      return { dbValues, jobDocuments };
+      return { dbValues, skillDocuments };
     } catch (error) {
       console.log(
         "Error occurred while getting proposals from the database",

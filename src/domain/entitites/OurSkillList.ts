@@ -28,5 +28,5 @@ export interface IskillProposal extends Document {
 
   export type CombinedSkillValues = {
     dbValues: IskillProposal[] | null;
-    jobDocuments: ISkill[] | null;
+    skillDocuments: ISkill[] | null;
   };
