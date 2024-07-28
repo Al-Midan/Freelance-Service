@@ -163,6 +163,16 @@ export class freelanceController {
       res.status(500).json({ message: "error Occured While Delete The Job " });
     }
   }
+  async deleteSkill(req: Request, res: Response) {
+    try {
+      const skillId = req.params.skillId;
+      const response = await this.freelanceService.deleteSkill(skillId);
+      res.status(200).json({ message: "Job Deleted Successfully", response });
+    } catch (error) {
+      console.error("error Occured While Delete The Job ", error);
+      res.status(500).json({ message: "error Occured While Delete The Job " });
+    }
+  }
   async jobBlock(req: Request, res: Response) {
     try {
       const { jobId, isBlock } = req.body;

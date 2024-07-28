@@ -51,6 +51,10 @@ router.delete(
   "/deleteJob/:jobId",
   controller.deleteJob.bind(controller)
 );
+router.delete(
+  "/deleteSkill/:jobId",
+  controller.deleteSkill.bind(controller)
+);
 router.post(
   "/jobBlock",
   controller.jobBlock.bind(controller)

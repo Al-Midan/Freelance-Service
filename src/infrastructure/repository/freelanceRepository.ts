@@ -319,7 +319,16 @@ export class freelanceRepository implements IfreelanceRepository {
       const jobDetails = await Job.findByIdAndDelete(jobId);
       return jobDetails ? jobDetails : null;
     } catch (error) {
-      console.log("Error Getting Job details", error);
+      console.log("Error Deleting Job ", error);
+      return null;
+    }
+  }
+  async deleteSkillDb(skillId: string) {
+    try {
+      const skillDetails = await Skill.findByIdAndDelete(skillId);
+      return skillDetails ? skillDetails : null;
+    } catch (error) {
+      console.log("Error Deleting Skill", error);
       return null;
     }
   }
