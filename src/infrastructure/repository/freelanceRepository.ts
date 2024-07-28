@@ -5,7 +5,7 @@ import {
   IDbValues,
   IJobDocuments,
 } from "../../domain/entitites/OurJobList";
-import {  ISkill, IskillProposal } from "../../domain/entitites/OurSkillList";
+import { ISkill, IskillProposal } from "../../domain/entitites/OurSkillList";
 import { proposalPost } from "../../domain/entitites/sendProposal";
 import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
@@ -223,7 +223,7 @@ export class freelanceRepository implements IfreelanceRepository {
       return null;
     }
   }
-  async getJobRequests(userId: string): Promise<CombinedValues | null> {
+  async getJobRequests(userId: string) {
     try {
       await kafkaProducer.sendUserDetailsRequest(userId);
       const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
@@ -257,8 +257,42 @@ export class freelanceRepository implements IfreelanceRepository {
       return null;
     }
   }
+  async getSkillRequests(userId: string) {
+    try {
+      await kafkaProducer.sendUserDetailsRequest(userId);
+      const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
+        userId
+      );
+      console.log("userDetails from kafka consumer", userDetails);
 
-  async getAllProposals(userId: string){
+      if (!userDetails || !userDetails.email) {
+        console.log("User details or email is undefined");
+        return null;
+      }
+
+      const dbValues = (await skillProposalDb.find({
+        OwnerEmail: userDetails.email,
+      })) as IskillProposal[];
+      if (!dbValues || dbValues.length === 0) {
+        return null;
+      }
+
+      const skillIds = dbValues.map((value) => value.skillId);
+      const jobDocuments = (await Job.find({
+        _id: { $in: skillIds },
+      })) as ISkill[];
+
+      return { dbValues, jobDocuments };
+    } catch (error) {
+      console.log(
+        "Error occurred while getting skill requests from the database",
+        error
+      );
+      return null;
+    }
+  }
+
+  async getAllProposals(userId: string) {
     try {
       const dbValues = (await ProposalDb.find({
         userId: userId,
@@ -293,11 +327,11 @@ export class freelanceRepository implements IfreelanceRepository {
       return null;
     }
   }
-  async getAllSkillProposals(userId: string){
+  async getAllSkillProposals(userId: string) {
     try {
       const dbValues = (await skillProposalDb.find({
         userId: userId,
-      })) as IskillProposal[]
+      })) as IskillProposal[];
       if (!dbValues || dbValues.length === 0) {
         return null;
       }
@@ -306,7 +340,7 @@ export class freelanceRepository implements IfreelanceRepository {
       const jobDocuments = (await Skill.find({
         _id: { $in: skillIds },
       })) as ISkill[];
-      return { dbValues, jobDocuments};
+      return { dbValues, jobDocuments };
     } catch (error) {
       console.log(
         "Error occurred while getting proposals from the database",

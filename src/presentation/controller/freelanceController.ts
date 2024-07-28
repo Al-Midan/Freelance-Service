@@ -126,6 +126,18 @@ export class freelanceController {
       res.status(500).json({ message: "Job Request getting Failed" });
     }
   }
+  async getSkillRequests(req: Request, res: Response) {
+    try {
+      const userId = req.params.userId;
+      const response = await this.freelanceService.getSkillRequests(userId);
+      res
+        .status(200)
+        .json({ message: " Got All SKILL Request Successfully", response });
+    } catch (error) {
+      console.error("Error occured in getting Skill Request", error);
+      res.status(500).json({ message: "Skill Request getting Failed" });
+    }
+  }
   async proposalStatus(req: Request, res: Response) {
     try {
       const proposalId = req.params.proposalId;

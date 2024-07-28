@@ -40,6 +40,10 @@ router.get(
   "/getJobRequests/:userId",
   controller.getJobRequests.bind(controller)
 );
+router.get(
+  "/getSkillRequests/:userId",
+  controller.getSkillRequests.bind(controller)
+);
 router.post(
   "/proposalStatus/:proposalId",
   controller.proposalStatus.bind(controller)

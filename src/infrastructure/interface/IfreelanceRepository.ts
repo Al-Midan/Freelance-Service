@@ -21,6 +21,7 @@ export interface IfreelanceRepository {
   getAllProposals(userId: string): Promise<CombinedValues | null>;
   getAllSkillProposals(userId: string): Promise<CombinedSkillValues | null>;
   getJobRequests(userId: string): Promise<CombinedValues | null>;
+  getSkillRequests(userId: string): Promise<CombinedSkillValues | null>;
   proposalStatusDb(proposalId: string,action: string): Promise<IProposal | null>;
   skillProposalStatusDb(proposalId: string,action: string): Promise<IskillProposal | null>;
   jobdetailsDb(jobId: string): Promise<IJob | null>;
