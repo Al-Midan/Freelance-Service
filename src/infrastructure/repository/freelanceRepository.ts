@@ -160,6 +160,27 @@ export class freelanceRepository implements IfreelanceRepository {
       return null;
     }
   }
+  async getUserSkillsDb(userId: string) {
+    try {
+      await kafkaProducer.sendUserDetailsRequest(userId);
+      const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
+        userId
+      );
+      console.log("userDetails from kafka consumer", userDetails);
+
+      if (!userDetails || !userDetails.email) {
+        console.log("User details or email is undefined");
+        return null;
+      }
+
+      const dbValues = await Skill.find({ email: userDetails.email });
+      console.log("Jobs found in database", dbValues);
+      return dbValues ? dbValues : null;
+    } catch (error) {
+      console.log("Error occurred while getting jobs from the database", error);
+      return null;
+    }
+  }
   async getUserJobsDb(userId: string) {
     try {
       await kafkaProducer.sendUserDetailsRequest(userId);

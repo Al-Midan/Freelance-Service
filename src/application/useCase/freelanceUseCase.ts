@@ -36,6 +36,10 @@ export class freelanceUseCase implements IfreelanceUseCase {
     const dbresponse = await this.repository.getUserJobsDb(userId);
     return dbresponse ? dbresponse : null;
   }
+  async getuserAllSkills(userId: string) {
+    const dbresponse = await this.repository.getUserSkillsDb(userId);
+    return dbresponse ? dbresponse : null;
+  }
   async getAllProposals(userId: string) {
     const dbresponse = await this.repository.getAllProposals(userId);
     return dbresponse ? dbresponse : null;

@@ -27,6 +27,7 @@ router.post(
   controller.skillProposal.bind(controller)
 );
 router.get("/getUserJobs/:userId", controller.getuserALlJob.bind(controller));
+router.get("/getUserSkills/:userId", controller.getuserALlSkills.bind(controller));
 router.get(
   "/GetAllProposals/:userId",
   controller.getAllProposals.bind(controller)

@@ -16,6 +16,7 @@ export interface IfreelanceUseCase {
   proposalSend(values: proposalPost): Promise<IProposal | null>;
   skillProposal(values: SkillProposal): Promise<IskillProposal | null>;
   getuserAllJobs(userId: string): Promise<IJob[] | null>;
+  getuserAllSkills(userId: string): Promise<ISkill[] | null>;
   getAllProposals(userId: string): Promise<CombinedValues | null>;
   getJobRequests(userId: string): Promise<CombinedValues | null>;
   changeProposalStatus(proposalId: string,action: string): Promise<IProposal | null>;
