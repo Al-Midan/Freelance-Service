@@ -5,6 +5,7 @@ import {
   IDbValues,
   IJobDocuments,
 } from "../../domain/entitites/OurJobList";
+import {  ISkill, IskillProposal } from "../../domain/entitites/OurSkillList";
 import { proposalPost } from "../../domain/entitites/sendProposal";
 import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
@@ -257,7 +258,7 @@ export class freelanceRepository implements IfreelanceRepository {
     }
   }
 
-  async getAllProposals(userId: string): Promise<CombinedValues | null> {
+  async getAllProposals(userId: string){
     try {
       const dbValues = (await ProposalDb.find({
         userId: userId,
@@ -284,6 +285,28 @@ export class freelanceRepository implements IfreelanceRepository {
       const updatedJobDocuments = await Promise.all(updatePromises);
 
       return { dbValues, jobDocuments: updatedJobDocuments };
+    } catch (error) {
+      console.log(
+        "Error occurred while getting proposals from the database",
+        error
+      );
+      return null;
+    }
+  }
+  async getAllSkillProposals(userId: string){
+    try {
+      const dbValues = (await skillProposalDb.find({
+        userId: userId,
+      })) as IskillProposal[]
+      if (!dbValues || dbValues.length === 0) {
+        return null;
+      }
+
+      const skillIds = dbValues.map((value) => value.skillId);
+      const jobDocuments = (await Skill.find({
+        _id: { $in: skillIds },
+      })) as ISkill[];
+      return { dbValues, jobDocuments};
     } catch (error) {
       console.log(
         "Error occurred while getting proposals from the database",

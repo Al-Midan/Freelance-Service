@@ -33,6 +33,10 @@ router.get(
   controller.getAllProposals.bind(controller)
 );
 router.get(
+  "/getAllSkillProposals/:userId",
+  controller.getAllSkillProposals.bind(controller)
+);
+router.get(
   "/getJobRequests/:userId",
   controller.getJobRequests.bind(controller)
 );

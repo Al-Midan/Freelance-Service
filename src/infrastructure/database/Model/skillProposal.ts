@@ -4,7 +4,7 @@ const { ObjectId } = mongoose.Schema.Types;
 
 export interface IskillProposal extends Document {
   email: string;
-  jobId: mongoose.Types.ObjectId;
+  skillId: mongoose.Types.ObjectId;
   userId: mongoose.Types.ObjectId;
   description: string;
   status: string;

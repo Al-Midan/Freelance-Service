@@ -1,6 +1,7 @@
 import { CreateJob } from "../../domain/entitites/createJob";
 import { CreateSkillALL } from "../../domain/entitites/createSkill";
 import { CombinedValues } from "../../domain/entitites/OurJobList";
+import { CombinedSkillValues } from "../../domain/entitites/OurSkillList";
 import { proposalPost } from "../../domain/entitites/sendProposal";
 import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
@@ -18,6 +19,7 @@ export interface IfreelanceUseCase {
   getuserAllJobs(userId: string): Promise<IJob[] | null>;
   getuserAllSkills(userId: string): Promise<ISkill[] | null>;
   getAllProposals(userId: string): Promise<CombinedValues | null>;
+  getAllSkillProposals(userId: string): Promise<CombinedSkillValues | null>;
   getJobRequests(userId: string): Promise<CombinedValues | null>;
   changeProposalStatus(proposalId: string,action: string): Promise<IProposal | null>;
   changeSkillProposalStatus(proposalId: string,action: string): Promise<IskillProposal | null>;
