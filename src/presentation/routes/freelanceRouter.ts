@@ -21,6 +21,11 @@ router.post(
   upload.single("cv"),
   controller.proposalPost.bind(controller)
 );
+router.post(
+  "/skillProposal",
+  upload.single("image"),
+  controller.skillProposal.bind(controller)
+);
 router.get("/getUserJobs/:userId", controller.getuserALlJob.bind(controller));
 router.get(
   "/GetAllProposals/:userId",

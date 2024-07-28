@@ -1,18 +1,20 @@
 import { CreateJob } from "../../domain/entitites/createJob";
 import { CreateSkillALL } from "../../domain/entitites/createSkill";
 import { CombinedValues } from "../../domain/entitites/OurJobList";
-import { returnProposal } from "../../domain/entitites/Proposalreturn";
 import { proposalPost } from "../../domain/entitites/sendProposal";
+import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
 import { IJob } from "../../infrastructure/database/Model/CreateJob";
 import { ISkill } from "../../infrastructure/database/Model/CreateSkill";
 import { IProposal } from "../../infrastructure/database/Model/ProposalDb";
+import { IskillProposal } from "../../infrastructure/database/Model/skillProposal";
 
 export interface IfreelanceUseCase {
   CreateJob(values: CreateJob): Promise<IJob | null>;
   getAllJob(): Promise<IJob[] | null>;
   getAllAdminJob(): Promise<IJob[] | null>;
-  proposalSend(values: proposalPost): Promise<returnProposal | null>;
+  proposalSend(values: proposalPost): Promise<IProposal | null>;
+  skillProposal(values: SkillProposal): Promise<IskillProposal | null>;
   getuserAllJobs(userId: string): Promise<IJob[] | null>;
   getAllProposals(userId: string): Promise<CombinedValues | null>;
   getJobRequests(userId: string): Promise<CombinedValues | null>;

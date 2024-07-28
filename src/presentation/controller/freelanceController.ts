@@ -54,6 +54,22 @@ export class freelanceController {
       res.status(500).json({ message: "Send Proposal Failed" });
     }
   }
+  async skillProposal(req: Request, res: Response) {
+    try {
+      console.log("req.body", req.body);
+      console.log("req.file", req.file);
+      const Image = req.file;
+      const values = { Image, ...req.body };
+      console.log("values.file", values);
+      const response = await this.freelanceService.skillProposal(values);
+      res
+        .status(200)
+        .json({ message: "Proposal Send  Successfully", response });
+    } catch (error) {
+      console.error("Error occured in Send Proposal", error);
+      res.status(500).json({ message: "Send Proposal Failed" });
+    }
+  }
   async getuserALlJob(req: Request, res: Response) {
     try {
       const userId = req.params.userId;

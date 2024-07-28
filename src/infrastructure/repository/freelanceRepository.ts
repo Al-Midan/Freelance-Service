@@ -6,12 +6,14 @@ import {
   IJobDocuments,
 } from "../../domain/entitites/OurJobList";
 import { proposalPost } from "../../domain/entitites/sendProposal";
+import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
 import { kafkaConsumer } from "../broker/kafkaBroker/kafkaConsumer";
 import { kafkaProducer } from "../broker/kafkaBroker/kafkaProducer";
 import Job from "../database/Model/CreateJob";
 import Skill from "../database/Model/CreateSkill";
 import ProposalDb from "../database/Model/ProposalDb";
+import skillProposalDb from "../database/Model/skillProposal";
 import { IfreelanceRepository } from "../interface/IfreelanceRepository";
 import { uploadS3Image } from "../s3/s3Uploader";
 
@@ -100,7 +102,7 @@ export class freelanceRepository implements IfreelanceRepository {
     }
   }
 
-  async sendProposalDb(values: proposalPost): Promise<any> {
+  async sendProposalDb(values: proposalPost) {
     try {
       console.log("values Created  successfully:", values);
 
@@ -128,6 +130,34 @@ export class freelanceRepository implements IfreelanceRepository {
     } catch (error) {
       console.error("Error in sendProposalDb:", error);
       throw error;
+    }
+  }
+  async skillProposal(values: SkillProposal) {
+    try {
+      console.log("values Created  successfully:", values);
+
+      const s3Response: any = await uploadS3Image(values.Image);
+      if (s3Response.error) {
+        console.error("Error uploading image to S3:", s3Response.error);
+        throw new Error("Failed to upload image to S3");
+      }
+
+      console.log("URL of the image from the S3 bucket:", s3Response.Location);
+
+      const proposalValues = {
+        OwnerEmail: values.email,
+        skillId: values.skillId,
+        description: values.description,
+        image: s3Response.Location,
+      };
+      const newProposal = new skillProposalDb(proposalValues);
+      const proposalSaved = await newProposal.save();
+
+      console.log(" Skill Proposal created successfully:", proposalSaved);
+      return proposalSaved ? proposalSaved : null;
+    } catch (error) {
+      console.error("Error in Skill ProposalDb:", error);
+      return null;
     }
   }
   async getUserJobsDb(userId: string) {
@@ -351,7 +381,7 @@ export class freelanceRepository implements IfreelanceRepository {
   }
   async getSkill() {
     try {
-      const skillDb = await Skill.find({isBlock:false});
+      const skillDb = await Skill.find({ isBlock: false });
       return skillDb ? skillDb : null;
     } catch (error) {
       console.error("Error Getting  Skill", error);

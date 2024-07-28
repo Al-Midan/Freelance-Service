@@ -1,6 +1,7 @@
 import { CreateJob } from "../../domain/entitites/createJob";
 import { CreateSkillALL } from "../../domain/entitites/createSkill";
 import { proposalPost } from "../../domain/entitites/sendProposal";
+import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
 import { IfreelanceRepository } from "../../infrastructure/interface/IfreelanceRepository";
 import { IfreelanceUseCase } from "../interface/IfreelanceUseCase";
@@ -25,6 +26,10 @@ export class freelanceUseCase implements IfreelanceUseCase {
   }
   async proposalSend(values: proposalPost) {
     const dbresponse = await this.repository.sendProposalDb(values);
+    return dbresponse ? dbresponse : null;
+  }
+  async skillProposal(values: SkillProposal) {
+    const dbresponse = await this.repository.skillProposal(values);
     return dbresponse ? dbresponse : null;
   }
   async getuserAllJobs(userId: string) {
