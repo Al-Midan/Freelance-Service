@@ -177,10 +177,10 @@ export class freelanceRepository implements IfreelanceRepository {
       }
 
       const dbValues = await Skill.find({ email: userDetails.email });
-      console.log("Jobs found in database", dbValues);
+      console.log("Skill found in database", dbValues);
       return dbValues ? dbValues : null;
     } catch (error) {
-      console.log("Error occurred while getting jobs from the database", error);
+      console.log("Error occurred while getting Skill from the database", error);
       return null;
     }
   }

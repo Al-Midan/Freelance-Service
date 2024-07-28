@@ -80,7 +80,7 @@ export class freelanceController {
       res.status(500).json({ message: "Job getting Failed" });
     }
   }
-  async getuserALlSkills(req: Request, res: Response) {
+  async getuserALLSkills(req: Request, res: Response) {
     try {
       const userId = req.params.userId;
       const response = await this.freelanceService.getuserAllSkills(userId);
