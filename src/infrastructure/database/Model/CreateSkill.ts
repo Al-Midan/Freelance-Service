@@ -6,7 +6,7 @@ export interface ISkill extends Document {
   category: string;
   proficiency: "Beginner" | "Intermediate" | "Expert";
   yearsOfExperience: number;
-  availability: string; 
+  availability: string;
   username: string;
   email: string;
   dateAdded: Date;

@@ -3,6 +3,7 @@ import { CreateSkillALL } from "../../domain/entitites/createSkill";
 import { proposalPost } from "../../domain/entitites/sendProposal";
 import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
+import { UpdateSkill } from "../../domain/entitites/updateSkill";
 import { IfreelanceRepository } from "../../infrastructure/interface/IfreelanceRepository";
 import { IfreelanceUseCase } from "../interface/IfreelanceUseCase";
 
@@ -80,6 +81,10 @@ export class freelanceUseCase implements IfreelanceUseCase {
   }
   async UpdateJob(values: updateJobPost) {
     const dbresponse = await this.repository.UpdateJobDb(values);
+    return dbresponse ? dbresponse : null;
+  }
+  async UpdateSkill(values: UpdateSkill) {
+    const dbresponse = await this.repository.UpdateSkillDb(values);
     return dbresponse ? dbresponse : null;
   }
   async deleteJob(jobId: string) {

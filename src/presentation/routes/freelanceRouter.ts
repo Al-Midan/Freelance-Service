@@ -64,6 +64,7 @@ router.get(
   controller.skillDetailsWithId.bind(controller)
 );
 router.put("/jobEdit/:jobId", controller.jobEdit.bind(controller));
+router.put("/skillEdit/:skillId", controller.skillId.bind(controller));
 router.delete("/deleteJob/:jobId", controller.deleteJob.bind(controller));
 router.delete("/deleteSkill/:jobId", controller.deleteSkill.bind(controller));
 router.post("/jobBlock", controller.jobBlock.bind(controller));

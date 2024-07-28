@@ -9,6 +9,7 @@ import { ISkill, IskillProposal } from "../../domain/entitites/OurSkillList";
 import { proposalPost } from "../../domain/entitites/sendProposal";
 import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
+import { UpdateSkill } from "../../domain/entitites/updateSkill";
 import { kafkaConsumer } from "../broker/kafkaBroker/kafkaConsumer";
 import { kafkaProducer } from "../broker/kafkaBroker/kafkaProducer";
 import Job from "../database/Model/CreateJob";
@@ -412,6 +413,26 @@ export class freelanceRepository implements IfreelanceRepository {
       return updatedJob;
     } catch (error) {
       console.error("Error updating job:", error);
+      return null;
+    }
+  }
+  async UpdateSkillDb(values: UpdateSkill) {
+    try {
+      const { skillId, ...updateData } = values;
+
+      const updatedSkill = await Skill.findByIdAndUpdate(
+        skillId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedSkill) {
+        throw new Error("Skill not found");
+      }
+
+      return updatedSkill;
+    } catch (error) {
+      console.error("Error updating skill:", error);
       return null;
     }
   }

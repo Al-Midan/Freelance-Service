@@ -5,6 +5,7 @@ import { CombinedSkillValues } from "../../domain/entitites/OurSkillList";
 import { proposalPost } from "../../domain/entitites/sendProposal";
 import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
+import { UpdateSkill } from "../../domain/entitites/updateSkill";
 import { IJob } from "../../infrastructure/database/Model/CreateJob";
 import { ISkill } from "../../infrastructure/database/Model/CreateSkill";
 import { IProposal } from "../../infrastructure/database/Model/ProposalDb";
@@ -33,6 +34,7 @@ export interface IfreelanceUseCase {
   jobDetailsWithId(jobId: string): Promise<IJob | null>;
   SkillDetailsWithId(SkillId: string): Promise<ISkill | null>;
   UpdateJob(values: updateJobPost): Promise<IJob | null>;
+  UpdateSkill(values: UpdateSkill): Promise<ISkill | null>;
   deleteJob(jobId: string): Promise<IJob | null>;
   deleteSkill(skillId: string): Promise<ISkill | null>;
   adminJobBlock(jobId: string, isBlock: boolean): Promise<IJob | null>;

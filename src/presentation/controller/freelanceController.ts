@@ -224,6 +224,21 @@ export class freelanceController {
         .json({ message: "error Occured While Update The Job Details" });
     }
   }
+  async skillId(req: Request, res: Response) {
+    console.log("req", req.body);
+    try {
+      const values = req.body;
+      const skillId = req.params.skillId;
+      const allValues = { skillId, ...values };
+      const response = await this.freelanceService.UpdateSkill(allValues);
+      res.status(200).json({ message: "Skill Updated Successfully", response });
+    } catch (error) {
+      console.error("error Occured While Update The Skill ", error);
+      res
+        .status(500)
+        .json({ message: "error Occured While Update The Skill " });
+    }
+  }
   async deleteJob(req: Request, res: Response) {
     try {
       const jobId = req.params.jobId;
@@ -269,12 +284,10 @@ export class freelanceController {
   async getAdminSkill(req: Request, res: Response) {
     try {
       const response = await this.freelanceService.getAdminSkill();
-      res
-        .status(200)
-        .json({
-          message: "ADMIN SIDE SKILL DATAS Fecthed Successfully",
-          response,
-        });
+      res.status(200).json({
+        message: "ADMIN SIDE SKILL DATAS Fecthed Successfully",
+        response,
+      });
     } catch (error) {
       console.error("Error occurred in ADMIN SIDE SKIILL GET ", error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -295,12 +308,10 @@ export class freelanceController {
     try {
       const { skillId, isBlock } = req.body;
       const response = await this.freelanceService.skillBlock(skillId, isBlock);
-      res
-        .status(200)
-        .json({
-          message: "ADMIN SIDE SKILL DATAS Fecthed Successfully",
-          response,
-        });
+      res.status(200).json({
+        message: "ADMIN SIDE SKILL DATAS Fecthed Successfully",
+        response,
+      });
     } catch (error) {
       console.error("Error occurred in ADMIN SIDE SKIILL GET ", error);
       res.status(500).json({ error: "Internal Server Error" });
