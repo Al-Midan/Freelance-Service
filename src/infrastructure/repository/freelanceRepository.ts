@@ -147,6 +147,7 @@ export class freelanceRepository implements IfreelanceRepository {
       const proposalValues = {
         OwnerEmail: values.email,
         skillId: values.skillId,
+        userId: values.userId,
         description: values.description,
         image: s3Response.Location,
       };

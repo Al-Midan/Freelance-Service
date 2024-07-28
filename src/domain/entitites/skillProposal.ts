@@ -1,6 +1,7 @@
 export interface SkillProposal {
     email: string;
     skillId: string;
+    userId: string;
     description: string;
     Image: UploadedFile;
   }

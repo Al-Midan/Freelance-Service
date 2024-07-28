@@ -3,8 +3,9 @@ import mongoose, { Document, Schema } from "mongoose";
 const { ObjectId } = mongoose.Schema.Types;
 
 export interface IskillProposal extends Document {
-  email: mongoose.Types.ObjectId;
+  email: string;
   jobId: mongoose.Types.ObjectId;
+  userId: mongoose.Types.ObjectId;
   description: string;
   status: string;
   image: string;
@@ -15,6 +16,9 @@ const ProposalSchema: Schema = new Schema({
     type: String,
   },
   skillId: {
+    type: ObjectId,
+  },
+  userId: {
     type: ObjectId,
   },
   description: {
