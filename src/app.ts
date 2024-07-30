@@ -1,11 +1,24 @@
 import express from "express";
 import dotenv from "dotenv";
+import http from 'http';
 import cors from "cors";
 import router from "./presentation/routes/freelanceRouter";
 import connectDb from "./config/db/connect";
+import { Server } from 'socket.io';
 import { kafkaConsumer } from "./infrastructure/broker/kafkaBroker/kafkaConsumer";
-const app = express();
+
 dotenv.config();
+
+const app = express();
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: process.env.FRONTEND_URL, 
+    methods: ['GET', 'POST'],
+  },
+});
+
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
@@ -14,9 +27,23 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/", router);
+
+io.on('connection', (socket) => {
+  console.log('A user connected');
+
+  socket.on('new_message', (message) => {
+    io.emit('new_message', message);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+});
+
 async function startApp() {
   try {
     await connectDb;
@@ -26,7 +53,7 @@ async function startApp() {
     console.log("Kafka consumer initialized successfully");
 
     const PORT = process.env.PORT || 5004;
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
   } catch (err) {
@@ -34,4 +61,5 @@ async function startApp() {
     process.exit(1);
   }
 }
+
 startApp();
