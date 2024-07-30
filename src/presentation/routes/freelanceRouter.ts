@@ -80,5 +80,6 @@ router.get("/userProposalMessage", controller.userProposalMessage.bind(controlle
 router.get("/getSelectedMessage", controller.getSelectedMessage.bind(controller));
 router.post("/insertMessage", controller.insertMessage.bind(controller));
 router.post("/updateMessage", controller.updateMessage.bind(controller));
+router.post("/skillPayment", controller.skillPayment.bind(controller));
 
 export default router;

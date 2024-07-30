@@ -2,6 +2,7 @@ import { CreateJob } from "../../domain/entitites/createJob";
 import { CreateSkillALL } from "../../domain/entitites/createSkill";
 import { FrontMessageValues } from "../../domain/entitites/MessageValues ";
 import { proposalPost } from "../../domain/entitites/sendProposal";
+import { SkillPaymentRequest } from "../../domain/entitites/SkillPayment";
 import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
 import { updateMessageValue } from "../../domain/entitites/updateMessage";
@@ -131,6 +132,10 @@ export class freelanceUseCase implements IfreelanceUseCase {
   }
   async  updateMessage(values:updateMessageValue){
     const dbresponse = await this.repository.updateMessageDb(values);
+    return dbresponse ? dbresponse : null;
+  }
+  async skillPayment(values:SkillPaymentRequest){
+    const dbresponse = await this.repository.skillPayment(values);
     return dbresponse ? dbresponse : null;
   }
 }

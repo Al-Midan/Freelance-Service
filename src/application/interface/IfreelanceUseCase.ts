@@ -5,6 +5,7 @@ import { FrontMessageValues } from "../../domain/entitites/MessageValues ";
 import { CombinedValues } from "../../domain/entitites/OurJobList";
 import { CombinedSkillValues } from "../../domain/entitites/OurSkillList";
 import { proposalPost } from "../../domain/entitites/sendProposal";
+import { SkillPaymentRequest } from "../../domain/entitites/SkillPayment";
 import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
 import { updateMessageValue } from "../../domain/entitites/updateMessage";
@@ -13,6 +14,7 @@ import { IJob } from "../../infrastructure/database/Model/CreateJob";
 import { ISkill } from "../../infrastructure/database/Model/CreateSkill";
 import { IMessage } from "../../infrastructure/database/Model/Message";
 import { IProposal } from "../../infrastructure/database/Model/ProposalDb";
+import { ISkillTransaction } from "../../infrastructure/database/Model/SkillPaymet";
 import { IskillProposal } from "../../infrastructure/database/Model/skillProposal";
 
 export interface IfreelanceUseCase {
@@ -53,4 +55,5 @@ export interface IfreelanceUseCase {
   ): Promise<IMessage[] | null>;
   insertMessage(values:FrontMessageValues): Promise<IMessage | null>;
   updateMessage(values:updateMessageValue): Promise<IMessage | null>;
+  skillPayment(values:SkillPaymentRequest): Promise<ISkillTransaction | null>;
 }

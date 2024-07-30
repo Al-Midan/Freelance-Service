@@ -5,6 +5,7 @@ import { FrontMessageValues } from "../../domain/entitites/MessageValues ";
 import { CombinedValues } from "../../domain/entitites/OurJobList";
 import { CombinedSkillValues } from "../../domain/entitites/OurSkillList";
 import { proposalPost } from "../../domain/entitites/sendProposal";
+import { SkillPaymentRequest } from "../../domain/entitites/SkillPayment";
 import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
 import { updateMessageValue } from "../../domain/entitites/updateMessage";
@@ -13,6 +14,7 @@ import { IJob } from "../database/Model/CreateJob";
 import { ISkill } from "../database/Model/CreateSkill";
 import { IMessage } from "../database/Model/Message";
 import { IProposal } from "../database/Model/ProposalDb";
+import { ISkillTransaction } from "../database/Model/SkillPaymet";
 import { IskillProposal } from "../database/Model/skillProposal";
 
 export interface IfreelanceRepository {
@@ -53,4 +55,5 @@ export interface IfreelanceRepository {
   ): Promise<IMessage[] | null>;
   insertMessageDb(values:FrontMessageValues): Promise<IMessage | null>;
   updateMessageDb(values:updateMessageValue): Promise<IMessage | null>;
+  skillPayment(values:SkillPaymentRequest): Promise<ISkillTransaction | null>;
 }

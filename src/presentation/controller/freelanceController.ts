@@ -380,4 +380,14 @@ export class freelanceController {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
+  async skillPayment(req: Request, res: Response) {
+    try {
+      const values  = req.body;
+      const response = await this.freelanceService.skillPayment(values)
+      res.status(200).json({ message: "Skill Payment Message  SUCCESSFULLY",response})
+    } catch (error) {
+      console.error("Error occurred in Skill Payment Message", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
 }

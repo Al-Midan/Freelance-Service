@@ -8,6 +8,7 @@ import {
 } from "../../domain/entitites/OurJobList";
 import { ISkill, IskillProposal } from "../../domain/entitites/OurSkillList";
 import { proposalPost } from "../../domain/entitites/sendProposal";
+import { SkillPaymentRequest } from "../../domain/entitites/SkillPayment";
 import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
 import { updateMessageValue } from "../../domain/entitites/updateMessage";
@@ -18,6 +19,7 @@ import Job from "../database/Model/CreateJob";
 import Skill from "../database/Model/CreateSkill";
 import MessageDb from "../database/Model/Message";
 import ProposalDb from "../database/Model/ProposalDb";
+import SkillTransactionDb from "../database/Model/SkillPaymet";
 import skillProposalDb from "../database/Model/skillProposal";
 import { IfreelanceRepository } from "../interface/IfreelanceRepository";
 import { uploadS3Image } from "../s3/s3Uploader";
@@ -635,6 +637,22 @@ export class freelanceRepository implements IfreelanceRepository {
       return updatedMessage ? updatedMessage : null;
     } catch (error) {
       console.error("Error updating message", error);
+      return null;
+    }
+  }
+  async skillPayment(values: SkillPaymentRequest) {
+    try {
+      const payment = {
+        sender: values.sender,
+        receiver: values.receiver,
+        amount: values.amount,
+        paymentId: values.paymentId,
+      };
+      const savedPayment = new SkillTransactionDb(payment);
+      const saved = await savedPayment.save();
+      return saved ? saved : null;
+    } catch (error) {
+      console.error("Error Insert Skill Payment ", error);
       return null;
     }
   }
