@@ -1,5 +1,6 @@
 import { CreateJob } from "../../domain/entitites/createJob";
 import { CreateSkillALL } from "../../domain/entitites/createSkill";
+import { FrontMessageValues } from "../../domain/entitites/MessageValues ";
 import { proposalPost } from "../../domain/entitites/sendProposal";
 import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
@@ -117,6 +118,14 @@ export class freelanceUseCase implements IfreelanceUseCase {
   }
   async userProposalMessage(email:string){
     const dbresponse = await this.repository.userProposalMessageDb(email);
+    return dbresponse ? dbresponse : null;
+  }
+  async getSelectedMessage( sender: string,receiver: string){
+    const dbresponse = await this.repository.getSelectedMessage(sender,receiver);
+    return dbresponse ? dbresponse : null;
+  }
+  async insertMessage(values:FrontMessageValues){
+    const dbresponse = await this.repository.insertMessageDb(values);
     return dbresponse ? dbresponse : null;
   }
 }

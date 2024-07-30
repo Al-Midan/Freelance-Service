@@ -1,5 +1,6 @@
 import { CreateJob } from "../../domain/entitites/createJob";
 import { CreateSkillALL } from "../../domain/entitites/createSkill";
+import { FrontMessageValues } from "../../domain/entitites/MessageValues ";
 import {
   CombinedValues,
   IDbValues,
@@ -14,6 +15,7 @@ import { kafkaConsumer } from "../broker/kafkaBroker/kafkaConsumer";
 import { kafkaProducer } from "../broker/kafkaBroker/kafkaProducer";
 import Job from "../database/Model/CreateJob";
 import Skill from "../database/Model/CreateSkill";
+import MessageDb from "../database/Model/Message";
 import ProposalDb from "../database/Model/ProposalDb";
 import skillProposalDb from "../database/Model/skillProposal";
 import { IfreelanceRepository } from "../interface/IfreelanceRepository";
@@ -541,23 +543,32 @@ export class freelanceRepository implements IfreelanceRepository {
         OwnerEmail: email,
         status: "accept",
       });
-  
+
       if (proposalResponses.length === 0) {
         console.log("No matching proposals found");
         return null;
       }
-  
-      const receiverDetails: Array<{ _id: string; username: string; email: string }> = [];
-  
+
+      const receiverDetails: Array<{
+        _id: string;
+        username: string;
+        email: string;
+      }> = [];
+
       for (const proposal of proposalResponses) {
         await kafkaProducer.sendUserDetailsRequest(proposal.userId.toString());
-  
+
         const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
           proposal.userId.toString()
         );
         console.log("userDetails from kafka consumer", userDetails);
-  
-        if (userDetails && userDetails._id && userDetails.username && userDetails.email) {
+
+        if (
+          userDetails &&
+          userDetails._id &&
+          userDetails.username &&
+          userDetails.email
+        ) {
           receiverDetails.push({
             _id: userDetails._id,
             username: userDetails.username,
@@ -569,12 +580,12 @@ export class freelanceRepository implements IfreelanceRepository {
           );
         }
       }
-  
+
       if (receiverDetails.length === 0) {
         console.log("No valid receiver details found");
         return null;
       }
-  
+
       return {
         senderEmail: email,
         receiverDetails: receiverDetails,
@@ -584,5 +595,33 @@ export class freelanceRepository implements IfreelanceRepository {
       return null;
     }
   }
-  
+  async getSelectedMessage(sender: string, receiver: string) {
+    try {
+      const messages = await MessageDb.find({
+        $or: [
+          { sender: sender, receiver: receiver },
+          { sender: receiver, receiver: sender },
+        ],
+      });
+      return messages ? messages : null;
+    } catch (error) {
+      console.error("Error getting messages", error);
+      return null;
+    }
+  }
+  async insertMessageDb(values: FrontMessageValues) {
+    try {
+      const messageValues = {
+        sender: values.sender,
+        receiver: values.receiver,
+        content: values.content,
+      };
+      const dbSave = new MessageDb(messageValues);
+      const saved = await dbSave.save();
+      return saved ? saved : null;
+    } catch (error) {
+      console.error("Error Inserting messages", error);
+      return null;
+    }
+  }
 }

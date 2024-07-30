@@ -1,6 +1,7 @@
 import { CreateJob } from "../../domain/entitites/createJob";
 import { CreateSkillALL } from "../../domain/entitites/createSkill";
 import { ProposalMessageResult } from "../../domain/entitites/MessageUsers";
+import { FrontMessageValues } from "../../domain/entitites/MessageValues ";
 import { CombinedValues } from "../../domain/entitites/OurJobList";
 import { CombinedSkillValues } from "../../domain/entitites/OurSkillList";
 import { proposalPost } from "../../domain/entitites/sendProposal";
@@ -9,6 +10,7 @@ import { updateJobPost } from "../../domain/entitites/updateJob";
 import { UpdateSkill } from "../../domain/entitites/updateSkill";
 import { IJob } from "../../infrastructure/database/Model/CreateJob";
 import { ISkill } from "../../infrastructure/database/Model/CreateSkill";
+import { IMessage } from "../../infrastructure/database/Model/Message";
 import { IProposal } from "../../infrastructure/database/Model/ProposalDb";
 import { IskillProposal } from "../../infrastructure/database/Model/skillProposal";
 
@@ -43,5 +45,10 @@ export interface IfreelanceUseCase {
   getAdminSkill(): Promise<ISkill[] | null>;
   skillBlock(skillId: string, isBlock: boolean): Promise<ISkill | null>;
   getSkill(): Promise<ISkill[] | null>;
-  userProposalMessage(email:string): Promise<ProposalMessageResult|null>;
+  userProposalMessage(email: string): Promise<ProposalMessageResult | null>;
+  getSelectedMessage(
+    sender: string,
+    receiver: string
+  ): Promise<IMessage[] | null>;
+  insertMessage(values:FrontMessageValues): Promise<IMessage | null>;
 }

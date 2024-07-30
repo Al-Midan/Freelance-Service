@@ -334,4 +334,36 @@ export class freelanceController {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
+  async getSelectedMessage(req: Request, res: Response) {
+    try {
+      const { sender, receiver } = req.query;
+      if (sender && receiver) {
+        const response = await this.freelanceService.getSelectedMessage(
+          sender.toString(),
+          receiver.toString()
+        );
+        res.status(200).json({
+          message: "SELECTED USER MESSAGES Fecthed Successfully",
+          response,
+        });
+      }
+    } catch (error) {
+      console.error("Error occurred in SELECTED USER MESSAGES DATAS", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+  async insertMessage(req: Request, res: Response) {
+    try {
+      const { sender, receiver, content } = req.body;
+      if (!sender || !receiver || !content) {
+        res.status(204).json({ message:"message didn't get in Backend" });
+      }
+      const messageValues= {sender, receiver, content}
+      const response = await this.freelanceService.insertMessage(messageValues)
+      res.status(200).json({ message: "MESSAGE INSERTED SUCCESSFULLY",response})
+    } catch (error) {
+      console.error("Error occurred in Inserting USER MESSAGES DATAS", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
 }
