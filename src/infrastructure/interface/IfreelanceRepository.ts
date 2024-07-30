@@ -1,5 +1,6 @@
 import { CreateJob } from "../../domain/entitites/createJob";
 import { CreateSkillALL } from "../../domain/entitites/createSkill";
+import { ProposalMessageResult } from "../../domain/entitites/MessageUsers";
 import { CombinedValues } from "../../domain/entitites/OurJobList";
 import { CombinedSkillValues } from "../../domain/entitites/OurSkillList";
 import { proposalPost } from "../../domain/entitites/sendProposal";
@@ -42,4 +43,5 @@ export interface IfreelanceRepository {
   getAdminSkillDb(): Promise<ISkill[] | null>;
   skillBlockDb(skillId: string, isBlock: boolean): Promise<ISkill | null>;
   getSkill(): Promise<ISkill[] | null>;
+  userProposalMessageDb(email:string): Promise<ProposalMessageResult | null>;
 }

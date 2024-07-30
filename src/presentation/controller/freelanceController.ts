@@ -317,4 +317,21 @@ export class freelanceController {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
+  async userProposalMessage(req: Request, res: Response) {
+    try {
+      const { ownerEmail } = req.query;
+      if (ownerEmail) {
+        const response = await this.freelanceService.userProposalMessage(
+          ownerEmail.toString()
+        );
+        res.status(200).json({
+          message: "PROPOSAL ACCEPTED USERS DATAS Fecthed Successfully",
+          response,
+        });
+      }
+    } catch (error) {
+      console.error("Error occurred inPROPOSAL ACCEPTED USERS DATAS", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
 }

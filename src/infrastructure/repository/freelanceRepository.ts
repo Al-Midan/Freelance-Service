@@ -180,7 +180,10 @@ export class freelanceRepository implements IfreelanceRepository {
       console.log("Skill found in database", dbValues);
       return dbValues ? dbValues : null;
     } catch (error) {
-      console.log("Error occurred while getting Skill from the database", error);
+      console.log(
+        "Error occurred while getting Skill from the database",
+        error
+      );
       return null;
     }
   }
@@ -532,4 +535,54 @@ export class freelanceRepository implements IfreelanceRepository {
       return null;
     }
   }
+  async userProposalMessageDb(email: string) {
+    try {
+      const proposalResponses = await skillProposalDb.find({
+        OwnerEmail: email,
+        status: "accept",
+      });
+  
+      if (proposalResponses.length === 0) {
+        console.log("No matching proposals found");
+        return null;
+      }
+  
+      const receiverDetails: Array<{ _id: string; username: string; email: string }> = [];
+  
+      for (const proposal of proposalResponses) {
+        await kafkaProducer.sendUserDetailsRequest(proposal.userId.toString());
+  
+        const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
+          proposal.userId.toString()
+        );
+        console.log("userDetails from kafka consumer", userDetails);
+  
+        if (userDetails && userDetails._id && userDetails.username && userDetails.email) {
+          receiverDetails.push({
+            _id: userDetails._id,
+            username: userDetails.username,
+            email: userDetails.email,
+          });
+        } else {
+          console.log(
+            `User details are incomplete or undefined for userId: ${proposal.userId}`
+          );
+        }
+      }
+  
+      if (receiverDetails.length === 0) {
+        console.log("No valid receiver details found");
+        return null;
+      }
+  
+      return {
+        senderEmail: email,
+        receiverDetails: receiverDetails,
+      };
+    } catch (error) {
+      console.error("Error getting skillProposalDb Message", error);
+      return null;
+    }
+  }
+  
 }

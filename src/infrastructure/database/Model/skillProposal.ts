@@ -3,7 +3,7 @@ import mongoose, { Document, Schema } from "mongoose";
 const { ObjectId } = mongoose.Schema.Types;
 
 export interface IskillProposal extends Document {
-  email: string;
+  OwnerEmail: string;
   skillId: mongoose.Types.ObjectId;
   userId: mongoose.Types.ObjectId;
   description: string;
