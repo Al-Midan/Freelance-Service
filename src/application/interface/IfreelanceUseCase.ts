@@ -7,6 +7,7 @@ import { CombinedSkillValues } from "../../domain/entitites/OurSkillList";
 import { proposalPost } from "../../domain/entitites/sendProposal";
 import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
+import { updateMessageValue } from "../../domain/entitites/updateMessage";
 import { UpdateSkill } from "../../domain/entitites/updateSkill";
 import { IJob } from "../../infrastructure/database/Model/CreateJob";
 import { ISkill } from "../../infrastructure/database/Model/CreateSkill";
@@ -51,4 +52,5 @@ export interface IfreelanceUseCase {
     receiver: string
   ): Promise<IMessage[] | null>;
   insertMessage(values:FrontMessageValues): Promise<IMessage | null>;
+  updateMessage(values:updateMessageValue): Promise<IMessage | null>;
 }

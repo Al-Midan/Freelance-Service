@@ -10,6 +10,7 @@ import { ISkill, IskillProposal } from "../../domain/entitites/OurSkillList";
 import { proposalPost } from "../../domain/entitites/sendProposal";
 import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
+import { updateMessageValue } from "../../domain/entitites/updateMessage";
 import { UpdateSkill } from "../../domain/entitites/updateSkill";
 import { kafkaConsumer } from "../broker/kafkaBroker/kafkaConsumer";
 import { kafkaProducer } from "../broker/kafkaBroker/kafkaProducer";
@@ -621,6 +622,19 @@ export class freelanceRepository implements IfreelanceRepository {
       return saved ? saved : null;
     } catch (error) {
       console.error("Error Inserting messages", error);
+      return null;
+    }
+  }
+  async updateMessageDb(values: updateMessageValue) {
+    try {
+      const updatedMessage = await MessageDb.findByIdAndUpdate(
+        values._id,
+        { content: values.content },
+        { new: true }
+      );
+      return updatedMessage ? updatedMessage : null;
+    } catch (error) {
+      console.error("Error updating message", error);
       return null;
     }
   }

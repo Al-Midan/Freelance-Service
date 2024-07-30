@@ -366,4 +366,18 @@ export class freelanceController {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
+  async updateMessage(req: Request, res: Response) {
+    try {
+      const { _id, content } = req.body;
+      if (!_id || !content) {
+        res.status(204).json({ message:" Update message didn't get in Backend" });
+      }
+      const messageValues= {_id, content}
+      const response = await this.freelanceService.updateMessage(messageValues)
+      res.status(200).json({ message: "UPDATE MESSAGE INSERTED SUCCESSFULLY",response})
+    } catch (error) {
+      console.error("Error occurred in UPDATING USER MESSAGES DATAS", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
 }

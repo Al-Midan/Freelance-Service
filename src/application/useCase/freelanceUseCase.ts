@@ -4,6 +4,7 @@ import { FrontMessageValues } from "../../domain/entitites/MessageValues ";
 import { proposalPost } from "../../domain/entitites/sendProposal";
 import { SkillProposal } from "../../domain/entitites/skillProposal";
 import { updateJobPost } from "../../domain/entitites/updateJob";
+import { updateMessageValue } from "../../domain/entitites/updateMessage";
 import { UpdateSkill } from "../../domain/entitites/updateSkill";
 import { IfreelanceRepository } from "../../infrastructure/interface/IfreelanceRepository";
 import { IfreelanceUseCase } from "../interface/IfreelanceUseCase";
@@ -126,6 +127,10 @@ export class freelanceUseCase implements IfreelanceUseCase {
   }
   async insertMessage(values:FrontMessageValues){
     const dbresponse = await this.repository.insertMessageDb(values);
+    return dbresponse ? dbresponse : null;
+  }
+  async  updateMessage(values:updateMessageValue){
+    const dbresponse = await this.repository.updateMessageDb(values);
     return dbresponse ? dbresponse : null;
   }
 }
