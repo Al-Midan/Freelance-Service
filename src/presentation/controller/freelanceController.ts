@@ -360,7 +360,7 @@ export class freelanceController {
       }
       const messageValues= {sender, receiver, content}
       const response = await this.freelanceService.insertMessage(messageValues)
-      res.status(200).json({ message: "MESSAGE INSERTED SUCCESSFULLY",response})
+      res.status(200).json({ message: response})
     } catch (error) {
       console.error("Error occurred in Inserting USER MESSAGES DATAS", error);
       res.status(500).json({ error: "Internal Server Error" });

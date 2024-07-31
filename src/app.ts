@@ -32,15 +32,45 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/", router);
 
+const connectedUsers = new Map();
+
 io.on('connection', (socket) => {
   console.log('A user connected');
 
+  socket.on('user_connected', (userId) => {
+    connectedUsers.set(userId, socket.id);
+    console.log(`User ${userId} connected`);
+  });
+
   socket.on('new_message', (message) => {
-    io.emit('new_message', message);
+    console.log('New message received:', message);
+    console.log('New message received:', message);
+    const receiverSocketId = connectedUsers.get(message.receiver);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit('new_message', message);
+    }
+  });
+
+  socket.on('offer_response', (updatedMessage) => {
+    console.log('Offer response received:', updatedMessage);
+    const senderSocketId = connectedUsers.get(updatedMessage.sender);
+    if (senderSocketId) {
+      io.to(senderSocketId).emit('offer_update', updatedMessage);
+    }
+    const receiverSocketId = connectedUsers.get(updatedMessage.receiver);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit('offer_update', updatedMessage);
+    }
   });
 
   socket.on('disconnect', () => {
-    console.log('User disconnected');
+    for (const [userId, socketId] of connectedUsers.entries()) {
+      if (socketId === socket.id) {
+        connectedUsers.delete(userId);
+        console.log(`User ${userId} disconnected`);
+        break;
+      }
+    }
   });
 });
 
