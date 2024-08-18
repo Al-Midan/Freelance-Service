@@ -6,7 +6,7 @@ class KafkaConsumer extends KafkaModule {
 
   constructor() {
     // super('freelance-service-consumer', ['localhost:9092']);
-    super("user-service-producer", ["kafka:29092"]);
+    super("user-service-producer", ["kafka:9092"]);
   }
 
   async init() {

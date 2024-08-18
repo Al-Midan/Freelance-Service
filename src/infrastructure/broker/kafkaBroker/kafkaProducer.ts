@@ -3,7 +3,7 @@ import { KafkaModule } from "../../../utils/kafka/kafkaModule";
 class KafkaProducer extends KafkaModule {
   constructor() {
     //super('freelance-service-producer', ['localhost:9092']);
-    super("user-service-producer", ["kafka:29092"]);
+    super("user-service-producer", ["kafka:9092"]);
   }
 
   async sendUserDetailsRequest(userId: string): Promise<void> {
