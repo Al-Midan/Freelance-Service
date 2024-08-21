@@ -23,7 +23,7 @@ import SkillTransactionDb from "../database/Model/SkillPaymet";
 import skillProposalDb from "../database/Model/skillProposal";
 import { IfreelanceRepository } from "../interface/IfreelanceRepository";
 import { uploadS3Image } from "../s3/s3Uploader";
-
+import axios from "axios";
 export class freelanceRepository implements IfreelanceRepository {
   async createJob(allValues: CreateJob) {
     const s3Response: any = await uploadS3Image(allValues.image);
@@ -170,10 +170,14 @@ export class freelanceRepository implements IfreelanceRepository {
   }
   async getUserSkillsDb(userId: string) {
     try {
-      await kafkaProducer.sendUserDetailsRequest(userId);
-      const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
-        userId
+      // await kafkaProducer.sendUserDetailsRequest(userId);
+      // const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
+      //   userId
+      // );
+      const datas = await axios.get(
+        `http://13.71.112.129/user-service/getUser/${userId}`
       );
+      const userDetails = datas.data.userData;
       console.log("userDetails from kafka consumer", userDetails);
 
       if (!userDetails || !userDetails.email) {
@@ -194,10 +198,14 @@ export class freelanceRepository implements IfreelanceRepository {
   }
   async getUserJobsDb(userId: string) {
     try {
-      await kafkaProducer.sendUserDetailsRequest(userId);
-      const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
-        userId
+      // await kafkaProducer.sendUserDetailsRequest(userId);
+      // const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
+      //   userId
+      // );
+      const datas = await axios.get(
+        `http://13.71.112.129/user-service/getUser/${userId}`
       );
+      const userDetails = datas.data.userData;
       console.log("userDetails from kafka consumer", userDetails);
 
       if (!userDetails || !userDetails.email) {
@@ -234,10 +242,14 @@ export class freelanceRepository implements IfreelanceRepository {
   }
   async getJobRequests(userId: string) {
     try {
-      await kafkaProducer.sendUserDetailsRequest(userId);
-      const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
-        userId
+      // await kafkaProducer.sendUserDetailsRequest(userId);
+      // const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
+      //   userId
+      // );
+      const datas = await axios.get(
+        `http://13.71.112.129/user-service/getUser/${userId}`
       );
+      const userDetails = datas.data.userData;
       console.log("userDetails from kafka consumer", userDetails);
 
       if (!userDetails || !userDetails.email) {
@@ -268,10 +280,14 @@ export class freelanceRepository implements IfreelanceRepository {
   }
   async getSkillRequests(userId: string) {
     try {
-      await kafkaProducer.sendUserDetailsRequest(userId);
-      const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
-        userId
+      // await kafkaProducer.sendUserDetailsRequest(userId);
+      // const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
+      //   userId
+      // );
+      const datas = await axios.get(
+        `http://13.71.112.129/user-service/getUser/${userId}`
       );
+      const userDetails = datas.data.userData;
       console.log("userDetails from kafka consumer", userDetails);
 
       if (!userDetails || !userDetails.email) {
@@ -559,11 +575,15 @@ export class freelanceRepository implements IfreelanceRepository {
       }> = [];
 
       for (const proposal of proposalResponses) {
-        await kafkaProducer.sendUserDetailsRequest(proposal.userId.toString());
+        // await kafkaProducer.sendUserDetailsRequest(proposal.userId.toString());
 
-        const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
-          proposal.userId.toString()
+        // const userDetails = await kafkaConsumer.waitForUserDetailsResponse(
+        //   proposal.userId.toString()
+        // );
+        const datas = await axios.get(
+          `http://13.71.112.129/user-service/getUser/${proposal.userId}`
         );
+        const userDetails = datas.data.userData;
         console.log("userDetails from kafka consumer", userDetails);
 
         if (
